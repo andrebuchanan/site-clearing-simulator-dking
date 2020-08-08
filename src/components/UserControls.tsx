@@ -21,10 +21,10 @@ const UserControls = ({ parentCallback }: IUserControlsProps) => {
         parentCallback("l");
         break;
       case "right":
-        parentCallback("l");
+        parentCallback("r");
         break;
       case "quit":
-        parentCallback("l");
+        parentCallback("q");
         break;
     }
   }
