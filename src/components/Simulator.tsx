@@ -3,15 +3,14 @@ import SiteMap from "./SiteMap";
 
 const Simulator = () => {
 
-  const exampleSiteMap: string[] = ["o","o","t","T","o","T","T","t"];
+  //const exampleSiteMap: string[] = ["o","o","t","T","o","T","T","t", "t"];
+  const complexSiteMap: string[][] = [["o","o","t"],["T","o","T"],["T","t", "t"], ["o","o", "o"]];
 
-  // const renderMoves = () => {
-  //   //TODO
-  // }
-
+  //TODO
+  //Validate that dimensions of map fit requirements
 
   return(
-    <SiteMap squares={exampleSiteMap}/>
+    <SiteMap siteMap={complexSiteMap}/>
   )
 }
 

@@ -2,19 +2,40 @@ import React from "react";
 import MapSquare from "./MapSquare";
 
 interface ISiteMapProps {
-  squares: string[]
+  siteMap: string[][]
+}
+
+const style = {
+  border: '4px solid darkblue',
+  borderRadius: '10px',
+  width: '500px',
+  height: '500px',
+  margin: '0 auto',
+  display: 'grid',
+  gridTemplate: 'repeat(3, 1fr) / repeat(3, 1fr)' //default to a 3X3 Grid
 }
 
 
-const SiteMap = ({squares}: ISiteMapProps) => {
+const SiteMap = ({siteMap}: ISiteMapProps) => {
 
-  const BuildSiteMap = () => {
+  // Dynamically buold grid based off of the dimensions of the map provided
+  const BuildGridStyle = () => {
+    const width: number = siteMap[0].length;
+    const height: number = siteMap.length;
+    
+    style.gridTemplate = `repeat(${width}, 1fr) / repeat(${height}, 1fr)`;
+    return style;
+  }
+
+  const BuildSiteMap = (): JSX.Element[] => {
     let items: JSX.Element[] = [];
 
-    for(const square of squares){
-      items.push(
-        <MapSquare landType={square}/>
-      )
+    for(const row of siteMap){
+      for(const square of row){
+        items.push(
+          <MapSquare landType={square}/>
+        )
+      }
     }
     return items;
   }
@@ -22,31 +43,10 @@ const SiteMap = ({squares}: ISiteMapProps) => {
   
 
   return(
-    <div>
+    <div style={BuildGridStyle()}>
       {BuildSiteMap()}
-      <MapSquare landType={squares[0]}/>
     </div>
   )
 }
 
-
-
-
-
-// function BuildMap(file: String[][]): void {
-//   //Build the SiteMap based off of the props
-
-//   let newMap: JSX.Element[][] = []
-
-//   for (let row=0; row < file.length; row++){
-//     for(let square = 0; square < file[row].length; square++){
-//       switch(file[row][square]){
-//         case "o":
-//           newMap[row].splice(square, 0, MapSquare("o")); //insert MapSquare element ar specificindex
-//           break;
-//         case "t":
-//       }
-//     }
-//   }
-// }
 export default SiteMap;

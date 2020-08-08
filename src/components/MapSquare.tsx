@@ -12,10 +12,18 @@ interface ISquareProps {
   landType: string
 }
 
+const style = {
+  background: 'lightblue',
+  border: '2px solid darkblue',
+  fontSize: '30px',
+  cursor: 'pointer',
+  outline: 'none'
+};
+
 const MapSquare = ({landType}: ISquareProps) => {
 
   return(
-    <h2>{landType}</h2>
+    <div style={style}>{landType}</div>
   );
 }
 
