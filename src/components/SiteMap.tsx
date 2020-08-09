@@ -1,51 +1,59 @@
-import React from "react";
+import React, {useState, useEffect}from "react";
 import MapSquare from "./MapSquare";
+import Bulldozer from "./Bulldozer"
+import IBulldozerPosition, { ISiteMapProps } from "../interfaces"
 
-interface ISiteMapProps {
-  siteMap: string[][]
-}
+const SiteMap = ({siteMap, bulldozerPosition, bulldozerDirection}: ISiteMapProps) => {
 
+  const [finalSiteMap, setFinalSiteMap] = useState<JSX.Element[][]>([]);
 
-const SiteMap = ({siteMap}: ISiteMapProps) => {
-
-  let style = {
+  const mapWidth: number = siteMap[0].length;
+  const mapHeight: number = siteMap.length;
+  const style = {
     border: '4px solid darkblue',
     borderRadius: '10px',
     width: '500px',
     height: '500px',
     margin: '0 auto',
     display: 'grid',
-    gridTemplate: 'repeat(3, 1fr) / repeat(3, 1fr)' //default to a 3X3 Grid
+    gridTemplate: `repeat(${mapWidth}, 1fr) / repeat(${mapHeight}, 1fr)`
   }
 
-  // Dynamically buold grid based off of the dimensions of the map provided
-  const BuildGridStyle = () => {
-    const width: number = siteMap[0].length;
-    const height: number = siteMap.length;
-    
-    style.gridTemplate = `repeat(${width}, 1fr) / repeat(${height}, 1fr)`;
-    return style;
-  }
 
-  const BuildSiteMap = (): JSX.Element[] => {
-    let items: JSX.Element[] = [];
+  //Build the sitemap based off of the map the user provided
+  const BuildSiteMap = (): void => {
+    console.log("Building Map...");
+    //TODO find better way to initilise array
+    let items: JSX.Element[][] = [[],[],[],[]];
 
-    //TODO Add key for each element
-    for(const row of siteMap){
-      for(const square of row){
-        items.push(
-          <MapSquare landType={square}/>
-        )
+    for(let i=0;i<siteMap.length; i++){
+      for(let j=0;j<siteMap[i].length; j++){
+        items[i].push(<MapSquare landType={siteMap[i][j]}/>);
       }
     }
-    return items;
+    //TODO Add key for each element
+    // for(const row of siteMap){
+    //   for(const square of row){
+    //     items.push(
+    //       <MapSquare landType={square}/>
+    //     )
+    //   }
+    // }
+    setFinalSiteMap(items);
+  }
+
+  const renderBulldozer = (): void => {
+    //setFinalSiteMap(finalSiteMap.splice(4,1,<Bulldozer/>));
   }
   
-  
+  useEffect(() => {
+    BuildSiteMap();
+    //renderBulldozer();
+  }, []);
 
   return(
-    <div style={BuildGridStyle()}>
-      {BuildSiteMap()}
+    <div style={style}>
+      {finalSiteMap}
     </div>
   )
 }

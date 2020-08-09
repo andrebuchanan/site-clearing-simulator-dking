@@ -1,31 +1,38 @@
-import React from "react";
+import React, {useState} from "react";
 
 interface IUserControlsProps {
-  parentCallback(cmd: string): void
+  UpdateCommandsUsedCallback(cmd: string): void
 }
 
 
-const UserControls = ({ parentCallback }: IUserControlsProps) => {
+const UserControls = ({ UpdateCommandsUsedCallback }: IUserControlsProps) => {
 
-  const handleSubmit = (e: React.FormEvent<HTMLInputElement>) => {
+  const [advanceValue, setAdvanceValue] = useState("");
+
+  const handleSubmit = (e : React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    //TODO Cannot get value of form entry
-    console.log(e.currentTarget.value);
-     //TODO a + number advanced
+    //TODO need to push {cmd: "a", value: value} object instead
+    UpdateCommandsUsedCallback(advanceValue);
+    //Reset the input box
+    Array.from(document.querySelectorAll("input")).forEach(
+      input => (input.value = "")
+    );
   }
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     switch(e.currentTarget.id){
       case "left":
         //update parent state
-        parentCallback("l");
+        UpdateCommandsUsedCallback("l");
         break;
       case "right":
-        parentCallback("r");
+        UpdateCommandsUsedCallback("r");
         break;
       case "quit":
-        parentCallback("q");
+        UpdateCommandsUsedCallback("q");
         break;
+      default:
+        throw console.error(`Invalid click command ${e.currentTarget.id}`);
     }
   }
 
@@ -35,6 +42,7 @@ const UserControls = ({ parentCallback }: IUserControlsProps) => {
         <label>Advance</label>
         <input
           type='number'
+          onChange={(val) => setAdvanceValue(val.currentTarget.value)}
         />
         <input type='submit' onClick={(e) => handleSubmit(e)}/>
       </form>
