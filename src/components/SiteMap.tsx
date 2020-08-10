@@ -1,7 +1,8 @@
 import React, {useState, useEffect}from "react";
 import MapSquare from "./MapSquare";
 import Bulldozer from "./Bulldozer"
-import IBulldozerPosition, { ISiteMapProps } from "../interfaces"
+import { ISiteMapProps } from "../interfaces"
+
 
 const SiteMap = ({siteMap, bulldozerPosition, bulldozerDirection}: ISiteMapProps) => {
 
@@ -21,7 +22,7 @@ const SiteMap = ({siteMap, bulldozerPosition, bulldozerDirection}: ISiteMapProps
 
 
   //Build the sitemap based off of the map the user provided
-  const BuildSiteMap = (): void => {
+const BuildInitialSiteMap = (): void => {
     console.log("Building Map...");
     //TODO find better way to initilise array
     let items: JSX.Element[][] = [[],[],[],[]];
@@ -31,29 +32,42 @@ const SiteMap = ({siteMap, bulldozerPosition, bulldozerDirection}: ISiteMapProps
         items[i].push(<MapSquare landType={siteMap[i][j]}/>);
       }
     }
-    //TODO Add key for each element
-    // for(const row of siteMap){
-    //   for(const square of row){
-    //     items.push(
-    //       <MapSquare landType={square}/>
-    //     )
-    //   }
-    // }
-    setFinalSiteMap(items);
+    items[bulldozerPosition.yPos].splice(bulldozerPosition.xPos,1,<Bulldozer/>);
+
+    return setFinalSiteMap(items);
   }
 
-  const renderBulldozer = (): void => {
-    //setFinalSiteMap(finalSiteMap.splice(4,1,<Bulldozer/>));
+const renderBulldozer = (): void => {
+
+    //TODO
+    //Right idea here but can't refernece finalSiteMap[idx] cause we don't know if exists in that format yet
+
+    //setFinalSiteMap(finalSiteMap => [finalSiteMap[1].splice(2,1,<Bulldozer/>);])
+
+    //1. copy entire map
+    //2. splice in the update
+    //3. use useStateFunc to update to new state
+    // const copy: JSX.Element[][] = [...finalSiteMap];
+    // if (copy.length === 0) {return};
+    // copy[0].splice(0,1,<Bulldozer/>);
+    // setFinalSiteMap(copy);
   }
-  
+
   useEffect(() => {
-    BuildSiteMap();
+    BuildInitialSiteMap();
     //renderBulldozer();
-  }, []);
+  },[]);
+
+  useEffect(() => {
+    //cant call a func thst will update state from inside useeffect. infinite loop
+    //renderBulldozer();
+  },[]);
+
 
   return(
     <div style={style}>
       {finalSiteMap}
+      {renderBulldozer()}
     </div>
   )
 }

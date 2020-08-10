@@ -1,4 +1,4 @@
-export default interface IBulldozerPosition {
+export interface IBulldozerPosition {
   xPos: number;
   yPos: number;
 }
@@ -14,4 +14,9 @@ export enum EBulldozerDirection {
   east,
   south,
   west
+}
+
+export interface IUserCommand {
+  command: string;
+  value: number;
 }

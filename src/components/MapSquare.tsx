@@ -16,6 +16,7 @@ const style = {
   background: 'lightblue',
   border: '2px solid darkblue',
   fontSize: '30px',
+  margin: '0, auto',
   outline: 'none'
 };
 
