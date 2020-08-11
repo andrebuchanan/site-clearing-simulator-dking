@@ -1,40 +1,44 @@
 import React, {useState, useEffect} from 'react';
 import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
-import { IBulldozerPosition, EBulldozerDirection, IUserCommand } from "../interfaces"
+import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand } from "../interfaces";
+import UpdateBulldozerPosition from "../helper";
 
 const complexSiteMap: string[][] = [["o","o","t"],["T","o","T"],["T","t", "t"], ["o","o","o"]];
 
 const Simulator = () => {
 
-  const [bulldozerPosition, setBulldozerPosition] = useState<IBulldozerPosition>({xPos: 1, yPos: 1});
+  const [bulldozerPosition, setBulldozerPosition] = useState<IBulldozerPosition>({xPos: 0, yPos: 0});
   const [bulldozerDirection, setBulldozerDirection] = useState(EBulldozerDirection.east);
   const [commandsUsed, setCommandsUsed] = useState([]);
 
   //Used by child components to update the simulator state
-  const UpdateCommandsUsedCallback = (cmd: any) => {
+  const HandleUserCommand = (cmd: any /*IBulldozerPosition*/) => {
     setCommandsUsed(commandsUsed => commandsUsed.concat(cmd));
-    //
-    //updateBulldozerPosition
-
+    switch(cmd.command){
+      case EUserCommand.advance:
+        UpdateBulldozerPosition(cmd, bulldozerPosition, bulldozerDirection, setBulldozerPosition);
+        break;
+      case EUserCommand.quit:
+        //TODO User has quit
+        break;
+      default:
+        //TODO UpdateBulldozerDirection
+    }
   }
-
-  // const UpdateBulldozerPositionCallback = (newPosition: IBulldozerPosition) => {
-  //   //TODO
-  //   setBulldozerPosition(buzzdozerPosition);
-  // }
 
   //TODO
   //Validate that dimensions of map fit requirements
 
   useEffect(() => {
-    console.log(commandsUsed);
+    console.log(`CommandsUsed: ${commandsUsed}`);
+    console.log(`Bulldozer coordinates: ${bulldozerPosition.xPos}, ${bulldozerPosition.yPos}`);
   });
 
   return(
     <div>
       <SiteMap siteMap={complexSiteMap} bulldozerPosition={bulldozerPosition} bulldozerDirection={bulldozerDirection}/>
-      <UserControls UpdateCommandsUsedCallback={UpdateCommandsUsedCallback}/>
+      <UserControls HandleUserCommand={HandleUserCommand}/>
     </div>
     
   )

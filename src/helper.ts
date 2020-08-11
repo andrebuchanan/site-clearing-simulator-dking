@@ -1,6 +1,6 @@
 import { IBulldozerPosition, EBulldozerDirection, IUserCommand } from "./interfaces"
 
-const UpdateBulldozerPosition = (userCommand: IUserCommand,
+const UpdateBulldozerPosition = (userCommand: any/*IUserCommand*/,
   currentPosition: IBulldozerPosition,
   bulldozerDirection: EBulldozerDirection,
   bulldozerPositionCallback: any) => {
@@ -42,3 +42,5 @@ const UpdateBulldozerPosition = (userCommand: IUserCommand,
         break;
     }
 }
+
+export default UpdateBulldozerPosition;

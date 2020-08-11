@@ -16,7 +16,14 @@ export enum EBulldozerDirection {
   west
 }
 
+export enum EUserCommand {
+  advance,
+  left,
+  right,
+  quit
+}
+
 export interface IUserCommand {
-  command: string;
-  value: number;
+  command: EUserCommand;
+  value?: number;
 }

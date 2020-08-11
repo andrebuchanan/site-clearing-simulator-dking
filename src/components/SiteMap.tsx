@@ -17,7 +17,7 @@ const SiteMap = ({siteMap, bulldozerPosition, bulldozerDirection}: ISiteMapProps
     height: '500px',
     margin: '0 auto',
     display: 'grid',
-    gridTemplate: `repeat(${mapWidth}, 1fr) / repeat(${mapHeight}, 1fr)`
+    gridTemplate: `repeat(${mapHeight}, 1fr) / repeat(${mapWidth}, 1fr)`
   }
 
 

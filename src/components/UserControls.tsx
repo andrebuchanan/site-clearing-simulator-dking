@@ -1,18 +1,26 @@
 import React, {useState} from "react";
+import { IUserCommand, EUserCommand } from "../interfaces";
 
 interface IUserControlsProps {
-  UpdateCommandsUsedCallback(cmd: string): void
+  HandleUserCommand(cmd: IUserCommand): void
 }
 
 
-const UserControls = ({ UpdateCommandsUsedCallback }: IUserControlsProps) => {
+const UserControls = ({ HandleUserCommand }: IUserControlsProps) => {
 
   const [advanceValue, setAdvanceValue] = useState("");
+  let userCommand: IUserCommand;
 
   const handleSubmit = (e : React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    //TODO need to push {cmd: "a", value: value} object instead
-    UpdateCommandsUsedCallback(advanceValue);
+    
+    userCommand = {
+      command: EUserCommand.advance,
+      value: parseInt(advanceValue)
+    }
+    
+    HandleUserCommand(userCommand);
+
     //Reset the input box
     Array.from(document.querySelectorAll("input")).forEach(
       input => (input.value = "")
@@ -22,18 +30,25 @@ const UserControls = ({ UpdateCommandsUsedCallback }: IUserControlsProps) => {
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     switch(e.currentTarget.id){
       case "left":
-        //update parent state
-        UpdateCommandsUsedCallback("l");
+        userCommand = {
+          command: EUserCommand.left
+        }
         break;
       case "right":
-        UpdateCommandsUsedCallback("r");
+        userCommand = {
+          command: EUserCommand.right
+        }
         break;
       case "quit":
-        UpdateCommandsUsedCallback("q");
+        userCommand = {
+          command: EUserCommand.quit
+        }
         break;
       default:
         throw console.error(`Invalid click command ${e.currentTarget.id}`);
     }
+    //Update the parent state with the user command
+    HandleUserCommand(userCommand);
   }
 
   return(
