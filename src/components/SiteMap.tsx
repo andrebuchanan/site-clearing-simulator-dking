@@ -4,10 +4,9 @@ import Bulldozer from "./Bulldozer"
 import { ISiteMapProps } from "../interfaces"
 
 
-const SiteMap = ({siteMap, bulldozerPosition, bulldozerDirection}: ISiteMapProps) => {
+const SiteMap = ({siteMap, bulldozerPosition}: ISiteMapProps) => {
 
   const [finalSiteMap, setFinalSiteMap] = useState<JSX.Element[][]>([]);
-
   const mapWidth: number = siteMap[0].length;
   const mapHeight: number = siteMap.length;
   const style = {
@@ -19,6 +18,10 @@ const SiteMap = ({siteMap, bulldozerPosition, bulldozerDirection}: ISiteMapProps
     display: 'grid',
     gridTemplate: `repeat(${mapHeight}, 1fr) / repeat(${mapWidth}, 1fr)`
   }
+  const northBorder: number = 0;
+  const southBorder: number = mapHeight - 1;
+  const eastBorder: number = mapWidth - 1;
+  const westborder = 0;
 
 
   //Build the sitemap based off of the map the user provided
@@ -67,7 +70,6 @@ const renderBulldozer = (): void => {
   return(
     <div style={style}>
       {finalSiteMap}
-      {renderBulldozer()}
     </div>
   )
 }
