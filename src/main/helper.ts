@@ -1,48 +1,51 @@
 import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand } from "./interfaces"
 
-export const UpdateBulldozerPosition = (userCommand: any/*IUserCommand*/,
+/**
+ * Updates the x,y coordinates of the bulldozer
+ * @param userCommandValue The numeric value of the advance command the user has entered
+ * @param currentPosition The bulldozers current position
+ * @param bulldozerDirection The bulldozers current direction
+ * @returns A new IBulldozerPosition Object
+ */
+export const UpdateBulldozerPosition = (userCommandValue: number,
   currentPosition: IBulldozerPosition,
-  bulldozerDirection: EBulldozerDirection,
-  bulldozerPositionCallback: any) => {
+  bulldozerDirection: EBulldozerDirection): IBulldozerPosition => {
 
     let newPosition: IBulldozerPosition;
     switch(bulldozerDirection){
       case EBulldozerDirection.east:
         //TODO Handle Grid borders
         newPosition = {
-          xPos: currentPosition.xPos + userCommand.value,
+          xPos: currentPosition.xPos + userCommandValue,
           yPos: currentPosition.yPos
         }
-        bulldozerPositionCallback(newPosition);
         break;
 
       case EBulldozerDirection.west:
         //TODO Handle Grid borders
         newPosition = {
-          xPos: currentPosition.xPos - userCommand.value,
+          xPos: currentPosition.xPos - userCommandValue,
           yPos: currentPosition.yPos
         }
-        bulldozerPositionCallback(newPosition);
         break;
       case EBulldozerDirection.north:
         //TODO Handle Grid borders
         //TODO Handle moving to new array
         newPosition = {
           xPos: currentPosition.xPos,
-          yPos: currentPosition.yPos - userCommand.value
+          yPos: currentPosition.yPos - userCommandValue
         }
-        bulldozerPositionCallback(newPosition);
         break;
       case EBulldozerDirection.south:
         //TODO Handle Grid borders
         //TODO Handle moving to new array
         newPosition = {
           xPos: currentPosition.xPos,
-          yPos: currentPosition.yPos + userCommand.value
+          yPos: currentPosition.yPos + userCommandValue
         }
-        bulldozerPositionCallback(newPosition);
         break;
     }
+    return newPosition;
 }
 
 /**

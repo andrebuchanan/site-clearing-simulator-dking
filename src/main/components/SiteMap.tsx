@@ -4,7 +4,7 @@ import Bulldozer from "./Bulldozer"
 import { ISiteMapProps } from "../interfaces"
 
 
-const SiteMap = ({siteMap, bulldozerPosition}: ISiteMapProps) => {
+const SiteMap = ({siteMap, bulldozerPosition, UpdateSiteMapCallback}: ISiteMapProps) => {
 
   const [finalSiteMap, setFinalSiteMap] = useState<JSX.Element[][]>([]);
   const mapWidth: number = siteMap[0].length;
@@ -25,7 +25,7 @@ const SiteMap = ({siteMap, bulldozerPosition}: ISiteMapProps) => {
 
 
   //Build the sitemap based off of the map the user provided
-const BuildInitialSiteMap = (): void => {
+const BuildSiteMap = (): void => {
     console.log("Building Map...");
     //TODO find better way to initilise array
     let items: JSX.Element[][] = [[],[],[],[]];
@@ -58,7 +58,7 @@ const renderBulldozer = (): void => {
   }
 
   useEffect(() => {
-    BuildInitialSiteMap();
+    BuildSiteMap();
     //renderBulldozer();
   },[]);
 

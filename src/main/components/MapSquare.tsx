@@ -1,4 +1,5 @@
 import React from 'react';
+import { ISquareProps } from '../interfaces';
 
 /*This is a component representing a single square on the map the simulation is taking place on
 * Can be of 4 types
@@ -7,10 +8,6 @@ import React from 'react';
 * Removable Tree - t
 * Preserved Tree - T
 */
-
-interface ISquareProps {
-  landType: string
-}
 
 const style = {
   background: 'lightblue',

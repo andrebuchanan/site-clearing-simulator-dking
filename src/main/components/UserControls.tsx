@@ -31,17 +31,20 @@ const UserControls = ({ HandleUserCommand }: IUserControlsProps) => {
     switch(e.currentTarget.id){
       case "left":
         userCommand = {
-          command: EUserCommand.left
+          command: EUserCommand.left,
+          value: 0
         }
         break;
       case "right":
         userCommand = {
-          command: EUserCommand.right
+          command: EUserCommand.right,
+          value: 0
         }
         break;
       case "quit":
         userCommand = {
-          command: EUserCommand.quit
+          command: EUserCommand.quit,
+          value: 0
         }
         break;
       default:

@@ -5,7 +5,8 @@ export interface IBulldozerPosition {
 
 export interface ISiteMapProps {
   siteMap: string[][],
-  bulldozerPosition: IBulldozerPosition
+  bulldozerPosition: IBulldozerPosition,
+  UpdateSiteMapCallback(): void
 }
 
 export enum EBulldozerDirection {
@@ -24,5 +25,9 @@ export enum EUserCommand {
 
 export interface IUserCommand {
   command: EUserCommand;
-  value?: number;
+  value: number;
+}
+
+export interface ISquareProps {
+  landType: string
 }
