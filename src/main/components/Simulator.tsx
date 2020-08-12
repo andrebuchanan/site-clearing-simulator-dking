@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
 import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand } from "../interfaces";
-import { UpdateBulldozerPosition } from "../helper";
+import { UpdateBulldozerPosition, UpdateBulldozerDirection } from "../helper";
 
 const complexSiteMap: string[][] = [["o","o","t"],["T","o","T"],["T","t", "t"], ["o","o","o"]];
 
@@ -11,6 +11,7 @@ const Simulator = () => {
   const [bulldozerPosition, setBulldozerPosition] = useState<IBulldozerPosition>({xPos: 0, yPos: 0});
   const [bulldozerDirection, setBulldozerDirection] = useState(EBulldozerDirection.east);
   const [commandsUsed, setCommandsUsed] = useState([]);
+  const [isSimulationInProgress, setIsSimulationInProgress] = useState(true);
 
   //Used by child components to update the simulator state
   const HandleUserCommand = (cmd: any /*IBulldozerPosition*/) => {
@@ -21,10 +22,15 @@ const Simulator = () => {
         UpdateBulldozerPosition(cmd, bulldozerPosition, bulldozerDirection, setBulldozerPosition);
         break;
       case EUserCommand.quit:
-        //TODO User has quit
+        setIsSimulationInProgress(false);
         break;
       default:
-        //TODO UpdateBulldozerDirection
+        try {
+          const newDirection: EBulldozerDirection = UpdateBulldozerDirection(cmd.command, bulldozerDirection);
+          setBulldozerDirection(newDirection);
+        } catch (error) {
+          //TODO
+        }
     }
   }
 

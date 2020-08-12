@@ -51,7 +51,7 @@ export const UpdateBulldozerPosition = (userCommand: any/*IUserCommand*/,
  * @param bulldozerDirection The current orientation of the bulldozer (N,S,E,W)
  * @returns EBulldozerDirection enum or Error
  */
-export const UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirection: EBulldozerDirection): EBulldozerDirection | Error => {
+export const UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirection: EBulldozerDirection): EBulldozerDirection => {
   switch(bulldozerDirection) {
     case EBulldozerDirection.east:
       switch(command) {
@@ -60,7 +60,7 @@ export const UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirecti
         case EUserCommand.right:
           return EBulldozerDirection.south;
         default:
-          return Error("Invalid user command");
+          throw Error("Invalid user command");
       }
     case EBulldozerDirection.west:
       switch(command) {
@@ -69,7 +69,7 @@ export const UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirecti
         case EUserCommand.right:
           return EBulldozerDirection.north
         default:
-          return Error("Invalid user command");
+          throw Error("Invalid user command");
       }
     case EBulldozerDirection.north:
       switch(command) {
@@ -78,7 +78,7 @@ export const UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirecti
         case EUserCommand.right:
           return EBulldozerDirection.east; 
         default:
-          return Error("Invalid user command");
+          throw Error("Invalid user command");
       }
     case EBulldozerDirection.south:
       switch(command) {
@@ -87,10 +87,27 @@ export const UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirecti
         case EUserCommand.right:
           return EBulldozerDirection.west;   
         default:
-        return Error("Invalid user command");    
+        throw Error("Invalid user command");    
       }
       
     default:
-      return Error("Invalid Bulldozer Direction");
+      throw Error("Invalid Bulldozer Direction");
   }
+}
+
+const moveBulldozer = (currentPosition: IBulldozerPosition,
+  targetPosition: IBulldozerPosition,
+  landTypeOfTargetPosition: string) => {
+
+    if (/*target position contains protected tree */) {
+      //TODO End Simulation
+    }
+
+    else if (/*Target position is outside the boundaries of the site */) {
+      //TODO End Simulation
+    }
+
+    //TODO
+    //Update the landtype of the current position to o (cleared)
+
 }

@@ -35,7 +35,8 @@ const BuildInitialSiteMap = (): void => {
         items[i].push(<MapSquare landType={siteMap[i][j]}/>);
       }
     }
-    items[bulldozerPosition.yPos].splice(bulldozerPosition.xPos,1,<Bulldozer/>);
+    //Add in the bulldozer
+    items[bulldozerPosition.yPos].splice(bulldozerPosition.xPos, 1, <Bulldozer/>);
 
     return setFinalSiteMap(items);
   }
