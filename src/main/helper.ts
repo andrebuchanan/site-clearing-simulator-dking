@@ -98,19 +98,59 @@ export const UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirecti
   }
 }
 
-const moveBulldozer = (currentPosition: IBulldozerPosition,
-  targetPosition: IBulldozerPosition,
-  landTypeOfTargetPosition: string) => {
+// const moveBulldozer = (currentPosition: IBulldozerPosition,
+//   bulldozerDirection: EBulldozerDirection,
+//   spacesToMove: number,
+//   landTypeOfTargetPosition: string) => {
 
-    if (/*target position contains protected tree */) {
-      //TODO End Simulation
-    }
+//     //TODO need to update current position on each iteration
+//     for(let i = 0; i < spacesToMove; i++) {
+//       if (/*target position contains protected tree */) {
+//         //TODO End Simulation
+//       }
+  
+//       //Bulldozer is at the edge of the map, check if user tries to navigate outside the boundary
+//       else if (currentPosition.xPos === 0 || currentPosition.yPos === 0 
+//         || currentPosition.xPos === eastBorder || currentPosition.yPos === southBorder) {
+//         if(checkIfUserNavigatesOutsideBorder(currentPosition, bulldozerDirection)){
+//           isSimulationInProgress = false;
+//         }
+//       }
+  
+//       //TODO
+//       //Update the landtype of the current position to o (cleared)
+//     }
 
-    else if (/*Target position is outside the boundaries of the site */) {
-      //TODO End Simulation
-    }
+// }
 
-    //TODO
-    //Update the landtype of the current position to o (cleared)
-
-}
+/**
+ * 
+ * @param currentPosition 
+ * @param bulldozerDirection 
+ */
+// const checkIfUserNavigatesOutsideBorder = (currentPosition: IBulldozerPosition, 
+//   bulldozerDirection: EBulldozerDirection): boolean => {
+//   switch(bulldozerDirection) {
+//     case EBulldozerDirection.north:
+//       if(currentPosition.yPos === northBorder){
+//         return true;
+//       }
+//       break;
+//     case EBulldozerDirection.south:
+//       if(currentPosition.yPos === southBorder){
+//         return true;
+//       }
+//       break;
+//     case EBulldozerDirection.east:
+//       if(currentPosition.xPos === eastBorder){
+//         return true;
+//       }
+//       break;
+//     case EBulldozerDirection.west:
+//       if(currentPosition.xPos === westBorder){
+//         return true;
+//       }
+//       break;
+//   }
+//   return false;
+// }

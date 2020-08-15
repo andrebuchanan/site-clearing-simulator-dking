@@ -23,7 +23,7 @@ const Simulator = () => {
 
     switch(cmd.command){
       case EUserCommand.advance:
-        //TODO Should i return new Pos and update state in simulator instead
+        //TODO call moveBulldozer instead of update position
         const newPosition = UpdateBulldozerPosition(cmd.value, bulldozerPosition, bulldozerDirection);
         setBulldozerPosition(newPosition);
         break;

@@ -6,7 +6,7 @@ export interface IBulldozerPosition {
 export interface ISiteMapProps {
   siteMap: string[][],
   bulldozerPosition: IBulldozerPosition,
-  UpdateSiteMapCallback(): void
+  UpdateSiteMapCallback(newSiteMap: string[][]): void
 }
 
 export enum EBulldozerDirection {
