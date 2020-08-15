@@ -3,15 +3,14 @@ import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
 import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand } from "../interfaces";
 import { UpdateBulldozerPosition, UpdateBulldozerDirection } from "../helper";
-
-const dummyMap: string[][] = [["o","o","t"],["T","o","T"],["T","t", "t"], ["o","o","o"]];
+import store from '../store';
 
 const Simulator = () => {
 
   const [bulldozerPosition, setBulldozerPosition] = useState<IBulldozerPosition>({xPos: 0, yPos: 0});
   const [bulldozerDirection, setBulldozerDirection] = useState(EBulldozerDirection.east);
   const [commandsUsed, setCommandsUsed] = useState<IUserCommand[]>([]);
-  const [siteMap, setSiteMap] = useState<string[][]>(dummyMap);
+  //const [siteMap, setSiteMap] = useState<string[][]>(dummyMap);
   const [isSimulationInProgress, setIsSimulationInProgress] = useState(true);
 
   /**
@@ -41,23 +40,14 @@ const Simulator = () => {
     }
   }
 
-  /**
-   * 
-   * @param newSiteMap Used by child components to update the site map
-   */
-  const UpdateSiteMapCallback = (newSiteMap: string[][]): void => {
-    setSiteMap(newSiteMap);
-  }
-
   useEffect(() => {
-    console.log(`CommandsUsed: ${commandsUsed}`);
-    console.log(`Bulldozer coordinates: ${bulldozerPosition.xPos}, ${bulldozerPosition.yPos}`);
+    //TODO
   });
 
   return(
     <div>
-      <SiteMap siteMap={siteMap} bulldozerPosition={bulldozerPosition} UpdateSiteMapCallback={UpdateSiteMapCallback}/>
-      <UserControls HandleUserCommand={HandleUserCommand}/>
+      <SiteMap/>
+      <UserControls/>
     </div>
     
   )

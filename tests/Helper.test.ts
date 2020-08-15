@@ -1,5 +1,5 @@
-import /*UpdateBulldozerPosition,*/ { UpdateBulldozerDirection } from "../main/helper";
-import  { EBulldozerDirection, EUserCommand } from "../main/interfaces";
+import /*UpdateBulldozerPosition,*/ { UpdateBulldozerDirection } from "../src/helper";
+import  { EBulldozerDirection, EUserCommand } from "../src/interfaces";
 
 describe("UpdateBulldozerPosition", () => {
 

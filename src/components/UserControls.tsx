@@ -1,12 +1,17 @@
 import React, {useState} from "react";
 import { IUserCommand, EUserCommand } from "../interfaces";
+import { connect } from "react-redux";
+import AddUserCommand from "../actions/index";
+import store from "../store/index";
 
-interface IUserControlsProps {
-  HandleUserCommand(cmd: IUserCommand): void
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    AddUserCommand: (userCommand: IUserCommand)=> dispatch(AddUserCommand(userCommand))
+  };
 }
 
 
-const UserControls = ({ HandleUserCommand }: IUserControlsProps) => {
+const ConnectedUserControls = () => {
 
   const [advanceValue, setAdvanceValue] = useState("");
   let userCommand: IUserCommand;
@@ -19,7 +24,8 @@ const UserControls = ({ HandleUserCommand }: IUserControlsProps) => {
       value: parseInt(advanceValue)
     }
     
-    HandleUserCommand(userCommand);
+    //dispatch Action to add userCommand to Redux store
+    store.dispatch(AddUserCommand(userCommand));
 
     //Reset the input box
     Array.from(document.querySelectorAll("input")).forEach(
@@ -50,8 +56,8 @@ const UserControls = ({ HandleUserCommand }: IUserControlsProps) => {
       default:
         throw console.error(`Invalid click command ${e.currentTarget.id}`);
     }
-    //Update the parent state with the user command
-    HandleUserCommand(userCommand);
+    //dispatch Action to add userCommand to Redux store
+    store.dispatch(AddUserCommand(userCommand));
   }
 
   return(
@@ -70,5 +76,7 @@ const UserControls = ({ HandleUserCommand }: IUserControlsProps) => {
     </div>
   )
 }
+
+const UserControls = connect(null/*mapStateToProps */, mapDispatchToProps)(ConnectedUserControls);
 
 export default UserControls;
