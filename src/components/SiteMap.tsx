@@ -3,7 +3,7 @@ import MapSquare from "./MapSquare";
 import Bulldozer from "./Bulldozer";
 import { ISiteMapProps, IMapBorders } from "../interfaces";
 import { connect } from "react-redux";
-import UpdateMapBorders from "../actions";
+import { UpdateMapBorders } from "../actions";
 import store from "../store";
 
 const mapStateToProps = (state:  any/*TODO */) => {
@@ -41,8 +41,6 @@ const ConnectedSiteMap = ({siteMap, bulldozerPosition}: ISiteMapProps) => {
   }
   //Update the map borders in the redux store
   store.dispatch(UpdateMapBorders(mapBorders));
-
-  console.log(store.getState());
 
   //Build the sitemap of JSX Elements based off of the map the user provided
   const BuildSiteMap = (): void => {

@@ -54,7 +54,7 @@ export const UpdateBulldozerPosition = (userCommandValue: number,
  * @param bulldozerDirection The current orientation of the bulldozer (N,S,E,W)
  * @returns EBulldozerDirection enum or Error
  */
-export const UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirection: EBulldozerDirection): EBulldozerDirection => {
+export const _UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirection: EBulldozerDirection): EBulldozerDirection => {
   switch(bulldozerDirection) {
     case EBulldozerDirection.east:
       switch(command) {
@@ -123,11 +123,11 @@ export const UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirecti
 
 // }
 
-/**
- * 
- * @param currentPosition 
- * @param bulldozerDirection 
- */
+// /**
+//  * 
+//  * @param currentPosition 
+//  * @param bulldozerDirection 
+//  */
 // const checkIfUserNavigatesOutsideBorder = (currentPosition: IBulldozerPosition, 
 //   bulldozerDirection: EBulldozerDirection): boolean => {
 //   switch(bulldozerDirection) {

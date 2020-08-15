@@ -8,6 +8,15 @@ export interface ISiteMapProps {
   bulldozerPosition: IBulldozerPosition
 }
 
+export interface IBulldozerProps {
+  bulldozerPosition: IBulldozerPosition,
+  bulldozerDirection: EBulldozerDirection
+}
+
+export interface IUserCommandProps {
+  HandleUserCommandCallback(command: IUserCommand): void
+}
+
 export enum EBulldozerDirection {
   north,
   east,

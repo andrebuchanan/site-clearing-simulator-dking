@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import { IUserCommand, EUserCommand } from "../interfaces";
+import { IUserCommand, EUserCommand, IUserCommandProps } from "../interfaces";
 import { connect } from "react-redux";
-import AddUserCommand from "../actions/index";
+import { AddUserCommand } from "../actions/index";
 import store from "../store/index";
 
 const mapDispatchToProps = (dispatch: any) => {
@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch: any) => {
 }
 
 
-const ConnectedUserControls = () => {
+const ConnectedUserControls = ({ HandleUserCommandCallback }: IUserCommandProps) => {
 
   const [advanceValue, setAdvanceValue] = useState("");
   let userCommand: IUserCommand;
@@ -26,6 +26,8 @@ const ConnectedUserControls = () => {
     
     //dispatch Action to add userCommand to Redux store
     store.dispatch(AddUserCommand(userCommand));
+    //call the callback with the new command
+    HandleUserCommandCallback(userCommand);
 
     //Reset the input box
     Array.from(document.querySelectorAll("input")).forEach(
@@ -58,6 +60,8 @@ const ConnectedUserControls = () => {
     }
     //dispatch Action to add userCommand to Redux store
     store.dispatch(AddUserCommand(userCommand));
+    //call the callback with the new command
+    HandleUserCommandCallback(userCommand);
   }
 
   return(
