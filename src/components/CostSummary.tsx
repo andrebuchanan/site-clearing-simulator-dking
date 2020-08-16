@@ -67,9 +67,9 @@ const ConnectedCostSummary = ({fuelUsed, siteMap, userCommands, paintDamage}: IC
         <br/>
         Communication Overhead Cost: {communicationCost}
         <br/>
-        Paint Damage Repair Cost: {paintDamage}
+        Paint Damage Repair Cost: {paintDamageCost}
         <br/>
-        Total Cost: {fuelCost + unclearedSquaresCost + communicationCost + paintDamage}
+        Total Cost: {fuelCost + unclearedSquaresCost + communicationCost + paintDamageCost}
     </div>
     );
 }
