@@ -1,5 +1,7 @@
-import { ADD_USER_COMMAND, UPDATE_MAP_BORDERS, UPDATE_SIMULATION_IN_PROGRESS, UPDATE_BULLDOZER_DIRECTION } from "../constants/action-types";
-import { IUserCommand, IBulldozerPosition, EBulldozerDirection } from "../interfaces";
+import { IUserCommand, IBulldozerPosition, EBulldozerDirection, ELandType } from "../interfaces";
+import { ADD_USER_COMMAND, UPDATE_MAP_BORDERS, UPDATE_SIMULATION_IN_PROGRESS,
+  UPDATE_BULLDOZER_DIRECTION, UPDATE_BULLDOZER_POSITION, UPDATE_LAND_TYPE } from "../constants/action-types";
+import SiteMap from "../components/SiteMap";
 
 interface IInitialState {
   userCommands: IUserCommand[],
@@ -17,7 +19,7 @@ const initialState: IInitialState = {
   userCommands: [],
   siteMap: [["o","o","t"],["T","o","T"],["T","t", "t"], ["o","o","o"]], //TODO remove
   isSimulationInProgress: true,  
-  bulldozerPosition: { xPos: 1, yPos: 0 },
+  bulldozerPosition: { xPos: 0, yPos: 0 },
   bulldozerDirection: EBulldozerDirection.east,
   northBorder: 0,
   southBorder: 0,
@@ -45,9 +47,19 @@ const rootReducer = (state = initialState,  action: any/*IReduxAction */ ) => {
         isSimulationInProgress: action.payload
       })
     case UPDATE_BULLDOZER_DIRECTION:
-      console.log("changing direction");
       return Object.assign({}, state, {
         bulldozerDirection: action.payload
+      })
+    case UPDATE_BULLDOZER_POSITION:
+      return Object.assign({}, state, {
+        bulldozerPosition: action.payload
+      })
+    case UPDATE_LAND_TYPE:
+      const mapCopy: string[][] = [...state.siteMap];
+      mapCopy[action.payload.yPos].splice(action.payload.xPos, 1, ELandType.o);
+      console.log(`landtype after cleared ${mapCopy[action.payload.yPos][action.payload.xPos]}`);
+      return Object.assign({}, state, {
+        siteMap: mapCopy
       })
     default:
       return state;

@@ -59,23 +59,9 @@ const ConnectedSiteMap = ({siteMap, bulldozerPosition}: ISiteMapProps) => {
       return setFinalSiteMap(items);
     }
 
-// const renderBulldozer = (): void => {
-
-//     //TODO
-//     //Right idea here but can't refernece finalSiteMap[idx] cause we don't know if exists in that format yet
-//     //setFinalSiteMap(finalSiteMap => [finalSiteMap[1].splice(2,1,<Bulldozer/>);])
-//     //1. copy entire map
-//     //2. splice in the update
-//     //3. use useStateFunc to update to new state
-//     // const copy: JSX.Element[][] = [...finalSiteMap];
-//     // if (copy.length === 0) {return};
-//     // copy[0].splice(0,1,<Bulldozer/>);
-//     // setFinalSiteMap(copy);
-//   }
-
   useEffect(() => {
     BuildSiteMap();
-  },[]);
+  },[bulldozerPosition]);
 
 
   return(

@@ -13,6 +13,11 @@ export interface IBulldozerProps {
   bulldozerDirection: EBulldozerDirection
 }
 
+export interface ISimulatorProps {
+  bulldozerDirection: EBulldozerDirection,
+  isSimulationInProgress: boolean
+}
+
 export interface IUserCommandProps {
   HandleUserCommandCallback(command: IUserCommand): void
 }
@@ -29,6 +34,13 @@ export enum EUserCommand {
   left,
   right,
   quit
+}
+
+export enum ELandType {
+  o = "o",  //Plain Land
+  r = "r",  //Rocky Land,
+  t = "t",  //Removable Tree
+  T = "T",  //Preserved Tree
 }
 
 export interface IUserCommand {

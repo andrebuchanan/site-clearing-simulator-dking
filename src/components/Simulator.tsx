@@ -1,11 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
-import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand } from "../interfaces";
-import { _UpdateBulldozerDirection } from "../helper";
+import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps } from "../interfaces";
+import { _UpdateBulldozerDirection, moveBulldozer } from "../helper";
 import store from '../store';
 import { connect } from 'react-redux';
 import { UpdateBulldozerDirection, UpdateSimulationInProgress } from "../actions/index";
+import { stat } from 'fs';
+
+const mapStateToProps = (state:  any/*TODO */) => {
+  return { 
+    bulldozerPosition: state.bulldozerPosition,
+    bulldozerDirection: state.bulldozerDirection,
+    isSimulationInProgress: state.isSimulationInProgress
+  };
+};
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
@@ -14,42 +23,35 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 }
 
-const ConnectedSimulator = () => {
-
-  const bulldozerPosition: IBulldozerPosition = store.getState().bulldozerPosition;
-  const bulldozerDirection: EBulldozerDirection = store.getState().bulldozerDirection;
-  //const [siteMap, setSiteMap] = useState<string[][]>(dummyMap);
-
-
-  store.subscribe(() => {
-    console.log("inProgress? ", store.getState().isSimulationInProgress);
-  });
+const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISimulatorProps) => {
 
   /**
-   * Used by child components to update the simulator state 
-   * @param cmd - User command as IUSerCommand Object
+   * Used by child components to fire once user command added to state
+   * @param cmd - User command as IUserCommand Object
    */
   const HandleUserCommand = (cmd: IUserCommand): void => {
+    let newDirection: EBulldozerDirection;
+
     switch(cmd.command){
       case EUserCommand.advance:
-        //TODO call moveBulldozer instead of update position
-        //const newPosition = UpdateBulldozerPosition(cmd.value, bulldozerPosition, bulldozerDirection);
-        //setBulldozerPosition(newPosition);
-        //moveBulldozer(cmd.value);
-
+        //moveBulldozer forward based on the user command value
+        for(let i = 0; i < cmd.value; i++){
+          moveBulldozer();
+        }
         break;
       case EUserCommand.quit:
         store.dispatch(UpdateSimulationInProgress(false));
         break;
-      case EUserCommand.left || EUserCommand.right:
+      case EUserCommand.left:
+      case EUserCommand.right:
         try {
-          //TODO
-          // const newDirection: EBulldozerDirection = _UpdateBulldozerDirection(cmd.command, bulldozerDirection);
-          // store.dispatch(UpdateBulldozerDirection(newDirection));
-          // break;
+          newDirection = _UpdateBulldozerDirection(cmd.command, bulldozerDirection);
+          store.dispatch(UpdateBulldozerDirection(newDirection));
+          break;
         } catch (error) {
           //TODO
           console.log(error);
+          break;
         }
     }
   }
@@ -60,13 +62,19 @@ const ConnectedSimulator = () => {
 
   return(
     <div>
-      <SiteMap/>
-      <UserControls HandleUserCommandCallback={HandleUserCommand}/>
+      {isSimulationInProgress ? 
+      <>
+        <SiteMap/>
+        <UserControls HandleUserCommandCallback={HandleUserCommand}/>
+      </> : 
+      <>
+        <div>SIMULATION OVER</div>
+      </>}
     </div>
     
   )
 }
 
-const Simulator = connect(null, mapDispatchToProps)(ConnectedSimulator);
+const Simulator = connect(mapStateToProps, mapDispatchToProps)(ConnectedSimulator);
 
 export default Simulator;
