@@ -1,20 +1,9 @@
-import { IUserCommand, IBulldozerPosition, EBulldozerDirection, ELandType } from "../interfaces";
+import { IUserCommand, IBulldozerPosition, EBulldozerDirection, ELandType, IInitialState } from "../interfaces";
 import { ADD_USER_COMMAND, UPDATE_MAP_BORDERS, UPDATE_SIMULATION_IN_PROGRESS,
-  UPDATE_BULLDOZER_DIRECTION, UPDATE_BULLDOZER_POSITION, UPDATE_LAND_TYPE } from "../constants/action-types";
-import SiteMap from "../components/SiteMap";
+  UPDATE_BULLDOZER_DIRECTION, UPDATE_BULLDOZER_POSITION, UPDATE_LAND_TYPE,
+  UPDATE_FUEL_USED, UPDATE_PAINT_DAMAGE } from "../constants/action-types";
 
-interface IInitialState {
-  userCommands: IUserCommand[],
-  siteMap: string[][],
-  isSimulationInProgress: boolean,
-  bulldozerPosition: IBulldozerPosition;
-  bulldozerDirection: EBulldozerDirection,
-  northBorder: number,
-  southBorder: number,
-  eastBorder: number,
-  westBorder: number;
-}
-
+//TODO Move this to a new file
 const initialState: IInitialState = {
   userCommands: [],
   siteMap: [["o","o","t"],["T","o","T"],["T","t", "t"], ["o","o","o"]], //TODO remove
@@ -24,8 +13,10 @@ const initialState: IInitialState = {
   northBorder: 0,
   southBorder: 0,
   eastBorder: 0,
-  westBorder: 0
-
+  westBorder: 0,
+  fuelUsed: 0,
+  communicationOverhead: 0,
+  paintDamage: 0
 };
 
 const rootReducer = (state = initialState,  action: any/*IReduxAction */ ) => {
@@ -60,6 +51,14 @@ const rootReducer = (state = initialState,  action: any/*IReduxAction */ ) => {
       console.log(`landtype after cleared ${mapCopy[action.payload.yPos][action.payload.xPos]}`);
       return Object.assign({}, state, {
         siteMap: mapCopy
+      })
+    case UPDATE_FUEL_USED:
+      return Object.assign({}, state, {
+        fuelUsed: state.fuelUsed + action.payload
+      })
+    case UPDATE_PAINT_DAMAGE:
+      return Object.assign({}, state, {
+        paintDamage: state.paintDamage + action.payload
       })
     default:
       return state;

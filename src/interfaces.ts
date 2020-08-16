@@ -1,3 +1,18 @@
+export interface IInitialState {
+  userCommands: IUserCommand[],
+  siteMap: string[][],
+  isSimulationInProgress: boolean,
+  bulldozerPosition: IBulldozerPosition;
+  bulldozerDirection: EBulldozerDirection,
+  northBorder: number,
+  southBorder: number,
+  eastBorder: number,
+  westBorder: number;
+  fuelUsed: number;
+  communicationOverhead: number;
+  paintDamage: number
+}
+
 export interface IBulldozerPosition {
   xPos: number;
   yPos: number;
@@ -20,6 +35,13 @@ export interface ISimulatorProps {
 
 export interface IUserCommandProps {
   HandleUserCommandCallback(command: IUserCommand): void
+}
+
+export interface ICostSummaryProps {
+  fuelUsed: number,
+  siteMap: string[][],
+  userCommands: IUserCommand[],
+  paintDamage: number;
 }
 
 export enum EBulldozerDirection {

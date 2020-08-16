@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
-import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps } from "../interfaces";
-import { _UpdateBulldozerDirection, moveBulldozer } from "../helper";
+import { EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps } from "../interfaces";
+import { _updateBulldozerDirection, moveBulldozer } from "../BulldozerHelper";
 import store from '../store';
 import { connect } from 'react-redux';
 import { UpdateBulldozerDirection, UpdateSimulationInProgress } from "../actions/index";
-import { stat } from 'fs';
+import CostSummary from './CostSummary';
 
 const mapStateToProps = (state:  any/*TODO */) => {
   return { 
@@ -34,10 +34,7 @@ const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISi
 
     switch(cmd.command){
       case EUserCommand.advance:
-        //moveBulldozer forward based on the user command value
-        for(let i = 0; i < cmd.value; i++){
-          moveBulldozer();
-        }
+        moveBulldozer(cmd.value);
         break;
       case EUserCommand.quit:
         store.dispatch(UpdateSimulationInProgress(false));
@@ -45,7 +42,7 @@ const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISi
       case EUserCommand.left:
       case EUserCommand.right:
         try {
-          newDirection = _UpdateBulldozerDirection(cmd.command, bulldozerDirection);
+          newDirection = _updateBulldozerDirection(cmd.command, bulldozerDirection);
           store.dispatch(UpdateBulldozerDirection(newDirection));
           break;
         } catch (error) {
@@ -56,19 +53,16 @@ const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISi
     }
   }
 
-  useEffect(() => {
-    //TODO
-  });
-
   return(
     <div>
       {isSimulationInProgress ? 
       <>
         <SiteMap/>
         <UserControls HandleUserCommandCallback={HandleUserCommand}/>
-      </> : 
+      </> :
       <>
         <div>SIMULATION OVER</div>
+        <CostSummary/>
       </>}
     </div>
     

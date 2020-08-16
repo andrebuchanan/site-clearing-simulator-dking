@@ -1,7 +1,7 @@
 import { ADD_USER_COMMAND, UPDATE_MAP_BORDERS, 
     UPDATE_SIMULATION_IN_PROGRESS, UPDATE_BULLDOZER_DIRECTION,
-    UPDATE_BULLDOZER_POSITION, 
-    UPDATE_LAND_TYPE} from "../constants/action-types"
+    UPDATE_BULLDOZER_POSITION, UPDATE_LAND_TYPE,
+    UPDATE_FUEL_USED, UPDATE_PAINT_DAMAGE } from "../constants/action-types"
 
 const AddUserCommand = (payload: any) => {
     return { type: ADD_USER_COMMAND, payload }
@@ -25,7 +25,15 @@ const UpdateBulldozerPosition = (payload: any) => {
 
 const UpdateLandType = (payload: any) => {
     return { type: UPDATE_LAND_TYPE, payload }
-} 
+}
+
+const UpdateFuelUsed = (payload: number) => {
+    return { type: UPDATE_FUEL_USED, payload }
+}
+
+const UpdatePaintDamage = (payload: number) => {
+    return { type: UPDATE_PAINT_DAMAGE, payload }
+}
 
 export {
     AddUserCommand,
@@ -33,5 +41,7 @@ export {
     UpdateSimulationInProgress,
     UpdateBulldozerDirection,
     UpdateBulldozerPosition,
-    UpdateLandType
+    UpdateLandType,
+    UpdateFuelUsed,
+    UpdatePaintDamage
 }

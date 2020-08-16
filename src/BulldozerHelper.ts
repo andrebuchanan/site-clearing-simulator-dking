@@ -1,6 +1,7 @@
 import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand, ELandType } from "./interfaces"
 import store from './store';
 import { UpdateSimulationInProgress, UpdateBulldozerPosition, UpdateLandType } from "./actions/index";
+import { calculateFuelUsed, calculatePaintDamage } from "./OverheadsCalculator";
 
 
 /**
@@ -9,7 +10,7 @@ import { UpdateSimulationInProgress, UpdateBulldozerPosition, UpdateLandType } f
  * @param bulldozerDirection The current orientation of the bulldozer (N,S,E,W)
  * @returns EBulldozerDirection enum or Error
  */
-export const _UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirection: EBulldozerDirection): EBulldozerDirection => {
+export const _updateBulldozerDirection = (command: EUserCommand, bulldozerDirection: EBulldozerDirection): EBulldozerDirection => {
   switch(bulldozerDirection) {
     case EBulldozerDirection.east:
       switch(command) {
@@ -57,56 +58,54 @@ export const _UpdateBulldozerDirection = (command: EUserCommand, bulldozerDirect
  * Moves the x, y coordinates of the bulldozer by updating the Redux Store.
  * Will Also update the isSimulationInProgress boolean in the Redux store if the
  * user tries to make an illegal move
+ * @param advanceValue - The number of squares to move forward
  */
-export const moveBulldozer = (): void => {
+export const moveBulldozer = (advanceValue: number): void => {
 
-    const currentPosition: IBulldozerPosition = store.getState().bulldozerPosition;
-    const bulldozerDirection: EBulldozerDirection = store.getState().bulldozerDirection;
-    const siteMap: string[][] = store.getState().siteMap;
-    let newPosition: IBulldozerPosition;
+  let currentPosition: IBulldozerPosition;
+  let bulldozerDirection: EBulldozerDirection;
+  let siteMap: string[][];
+
+  for(let i = 0; i< advanceValue; i++) {
+
+    currentPosition = store.getState().bulldozerPosition;
+    bulldozerDirection = store.getState().bulldozerDirection;
+    siteMap = store.getState().siteMap;
 
     let targetPosition: IBulldozerPosition = getTargetPosition(currentPosition, bulldozerDirection);
     let targetPositionLandType: string = siteMap[targetPosition.yPos][targetPosition.xPos];
 
     //check if target position contains protected tree
-    if (targetPositionLandType === ELandType.T) {
+    if (targetContainsProtectedTree(targetPositionLandType)) {
       store.dispatch(UpdateSimulationInProgress(false));
     }
     //If Bulldozer is at the edge of the map, check if user tries to navigate outside the boundary
     else if (targetOutsideBorder(targetPosition)){
       store.dispatch(UpdateSimulationInProgress(false));
-    } else {
-      newPosition = getTargetPosition(currentPosition, bulldozerDirection);
+    } 
+    //If target position contains an uncleared tree then calculate paint damage
+    else {
+      if (targetContainsUnclearedTree(targetPositionLandType)) {
+        //Only 2 edge cases for paint damage
+        //1. The advance value > 1 and there is an uncleared tree in the target position
+        //2. It is not the last move of the advance and there is an uncleared tree in the target position
+        if (advanceValue > 1 || i !== advanceValue-1) {
+          calculatePaintDamage();
+        }
+      }
       //update landType to cleared
-      console.log(`landtype before cleared ${targetPositionLandType}`);
+      //TODO Move these to their own helper?
       store.dispatch(UpdateLandType(currentPosition));
-      store.dispatch(UpdateBulldozerPosition(newPosition));
+      store.dispatch(UpdateBulldozerPosition(targetPosition));
+      //calculate cost of moving into new square
+      calculateFuelUsed(targetPositionLandType as ELandType);
     }
-}
 
-/**
- * Function will check to see if the user is trying to navigate outside the boundaries
- * of the site. If so it will return true.
- * @param targetPosition The Target position of the bulldozer
- * @returns true boolean if user is trying to navigate outside boundary, false otherwise
- */
-const targetOutsideBorder = (targetPosition: IBulldozerPosition): boolean => {
-
-  const northBorder: number = store.getState().northBorder;
-  const southBorder: number = store.getState().southBorder;
-  const eastBorder: number = store.getState().eastBorder;
-  const westBorder: number = store.getState().westBorder;
-
-  if (targetPosition.xPos < westBorder || targetPosition.xPos > eastBorder ||
-    targetPosition.yPos < northBorder || targetPosition.yPos > southBorder){
-      return true;
-  } else
-    return false;
+  }
 }
 
 /**
  * Fetches the x,y coordinates of the target position of the bulldozer
- * @param userCommandValue The numeric value of the advance command the user has entered
  * @param currentPosition The bulldozers current position
  * @param bulldozerDirection The bulldozers current direction
  * @returns A new IBulldozerPosition Object
@@ -144,4 +143,45 @@ export const getTargetPosition = (
         break;
     }
     return newPosition;
+}
+
+/**
+ * Function will check to see if the user is trying to navigate outside the boundaries
+ * of the site. If so it will return true.
+ * @param targetPosition The Target position of the bulldozer
+ * @returns true boolean if user is trying to navigate outside boundary, false otherwise
+ */
+export const targetOutsideBorder = (targetPosition: IBulldozerPosition): boolean => {
+
+  const northBorder: number = store.getState().northBorder;
+  const southBorder: number = store.getState().southBorder;
+  const eastBorder: number = store.getState().eastBorder;
+  const westBorder: number = store.getState().westBorder;
+
+  if (targetPosition.xPos < westBorder || targetPosition.xPos > eastBorder ||
+    targetPosition.yPos < northBorder || targetPosition.yPos > southBorder){
+      return true;
+  } else
+    return false;
+}
+
+/**
+ * Function checks if the target position contains a protected tree
+ * @param targetPositionLandType string - the land type of the target position
+ * @returns boolean - true if contains protected tree
+ */
+export const targetContainsProtectedTree = (targetPositionLandType: string): boolean => {
+  if (targetPositionLandType === ELandType.T) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export const targetContainsUnclearedTree = (targetPositionLandType: string): boolean => {
+  if (targetPositionLandType === ELandType.t) {
+    return true;
+  } else {
+    return false;
+  }
 }
