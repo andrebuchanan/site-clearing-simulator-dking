@@ -14,7 +14,9 @@ const initialState: IInitialState = {
   westBorder: 0,
   fuelUsed: 0,
   communicationOverhead: 0,
-  paintDamage: 0
+  paintDamage: 0,
+  mapWidth: 0,
+  mapHeight: 0
 };
 
 const rootReducer = (state = initialState,  action: IReduxAction ) => {
@@ -61,7 +63,15 @@ const rootReducer = (state = initialState,  action: IReduxAction ) => {
     case constants.UPDATE_SITE_MAP:
       return Object.assign({}, state, {
         siteMap: action.payload
-      }) 
+      })
+    case constants.UPDATE_MAP_WIDTH:
+      return Object.assign({}, state, {
+        mapWidth: action.payload
+      })
+    case constants.UPDATE_MAP_HEIGHT:
+      return Object.assign({}, state, {
+        mapHeight: action.payload
+      })
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
 import { EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps } from "../interfaces";
@@ -7,7 +7,6 @@ import store from '../redux/store/store';
 import { connect } from 'react-redux';
 import { UpdateBulldozerDirection, UpdateSimulationInProgress } from "../redux/actions/actions";
 import CostSummary from './CostSummary';
-import FileUpload from './FileUpload';
 
 const mapStateToProps = (state:  any/*TODO */) => {
   return { 
@@ -54,18 +53,18 @@ const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISi
 
   return(
     <div>
-      <FileUpload/>
-      {/* {isSimulationInProgress ? 
-      <>
-        <SiteMap/>
-        <UserControls HandleUserCommandCallback={HandleUserCommand}/>
-      </> :
-      <>
-        <div>SIMULATION OVER</div>
-        <CostSummary/>
-      </>} */}
+        {isSimulationInProgress ? 
+        <>
+          <SiteMap/>
+          <UserControls HandleUserCommandCallback={HandleUserCommand}/>
+        </>
+        :
+        <>
+          <div>SIMULATION OVER</div>
+          <CostSummary/>
+        </>
+      }
     </div>
-    
   )
 }
 

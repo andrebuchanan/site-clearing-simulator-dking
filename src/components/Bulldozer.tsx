@@ -1,5 +1,4 @@
 import React from 'react';
-import { IBulldozerProps, EBulldozerDirection } from "../interfaces";
 
 
 const Bulldozer = () => {

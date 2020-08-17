@@ -10,7 +10,9 @@ export interface IInitialState {
   westBorder: number;
   fuelUsed: number;
   communicationOverhead: number;
-  paintDamage: number
+  paintDamage: number,
+  mapWidth: number,
+  mapHeight: number
 }
 
 export interface IBulldozerPosition {
@@ -20,6 +22,8 @@ export interface IBulldozerPosition {
 
 export interface ISiteMapProps {
   siteMap: string[][],
+  mapWidth: number,
+  mapHeight: number,
   bulldozerPosition: IBulldozerPosition
 }
 

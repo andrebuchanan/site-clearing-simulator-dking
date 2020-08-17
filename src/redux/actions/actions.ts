@@ -37,6 +37,14 @@ const UpdateSiteMap = (payload: string[][]) => {
     return { type: constants.UPDATE_SITE_MAP, payload }
 }
 
+const UpdateMapWidth = (payload: number) => {
+    return { type: constants.UPDATE_MAP_WIDTH, payload }
+}
+
+const UpdateMapHeight = (payload: number) => {
+    return { type: constants.UPDATE_MAP_HEIGHT, payload }
+}
+
 export {
     AddUserCommand,
     UpdateMapBorders,
@@ -46,5 +54,7 @@ export {
     UpdateLandType,
     UpdateFuelUsed,
     UpdatePaintDamage,
-    UpdateSiteMap
+    UpdateSiteMap,
+    UpdateMapWidth,
+    UpdateMapHeight
 }

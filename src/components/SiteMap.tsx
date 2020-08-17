@@ -9,6 +9,8 @@ import store from "../redux/store/store";
 const mapStateToProps = (state:  any/*TODO */) => {
   return { 
     siteMap: state.siteMap,
+    mapWidth: state.mapWidth,
+    mapHeight: state.mapHeight,
     bulldozerPosition: state.bulldozerPosition
   };
 };
@@ -19,53 +21,60 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 }
 
-const ConnectedSiteMap = ({siteMap, bulldozerPosition}: ISiteMapProps) => {
+const ConnectedSiteMap = ({siteMap, mapWidth, mapHeight, bulldozerPosition}: ISiteMapProps) => {
 
-  const [finalSiteMap, setFinalSiteMap] = useState<JSX.Element[][]>([]);
-  const mapWidth: number = siteMap[0].length;
-  const mapHeight: number = siteMap.length;
-  const style = {
-    border: '4px solid darkblue',
-    borderRadius: '10px',
-    width: '500px',
-    height: '500px',
-    margin: '0 auto',
-    display: 'grid',
-    gridTemplate: `repeat(${mapHeight}, 1fr) / repeat(${mapWidth}, 1fr)`
-  }
-
-  //North and west borders will always equal 0
-  const mapBorders: IMapBorders = {
-    eastBorder: (mapWidth - 1),
-    southBorder: (mapHeight - 1)
-  }
-  //Update the map borders in the redux store
-  store.dispatch(UpdateMapBorders(mapBorders));
+  const [ finalSiteMap, setFinalSiteMap ] = useState<JSX.Element[][]>([]);
+  const [ finalMapStyle, setFinalMapStyle ] = useState();
 
   //Build the sitemap of JSX Elements based off of the map the user provided
-  const BuildSiteMap = (): void => {
-      console.log("Building Map...");
-      //TODO find better way to initilise array
-      let items: JSX.Element[][] = [[],[],[],[]];
+  const buildSiteMap = (): void => {
 
-      for(let i=0;i<siteMap.length; i++){
-        for(let j=0;j<siteMap[i].length; j++){
-          items[i].push(<MapSquare landType={siteMap[i][j]}/>);
-        }
+    //TODO find better way to initilise array
+    let items: JSX.Element[][] = [[],[],[],[]];
+
+    for(let i=0;i<siteMap.length; i++){
+      for(let j=0;j<siteMap[i].length; j++){
+        items[i].push(<MapSquare landType={siteMap[i][j]}/>);
       }
-      //Add in the bulldozer
-      items[bulldozerPosition.yPos].splice(bulldozerPosition.xPos, 1, <Bulldozer/>);
-
-      return setFinalSiteMap(items);
     }
+    //Add in the bulldozer
+    items[bulldozerPosition.yPos].splice(bulldozerPosition.xPos, 1, <Bulldozer/>);
+
+    return setFinalSiteMap(items);
+  }
+
+  const buildMapBorders = () => {
+    //North and west borders will always equal 0
+    const mapBorders: IMapBorders = {
+      eastBorder: (mapWidth - 1),
+      southBorder: (mapHeight - 1)
+    }
+    //Update the map borders in the redux store
+    store.dispatch(UpdateMapBorders(mapBorders));
+  }
+  
+  const buildMapStyle = (): void => {
+    const style: any = {
+      border: '4px solid darkblue',
+      borderRadius: '10px',
+      width: '500px',
+      height: '500px',
+      margin: '0 auto',
+      display: 'grid',
+      gridTemplate: `repeat(${mapHeight}, 1fr) / repeat(${mapWidth}, 1fr)`
+    }
+    setFinalMapStyle(style);
+  }
 
   useEffect(() => {
-    BuildSiteMap();
+    buildMapBorders();
+    buildSiteMap();
+    buildMapStyle();
   },[bulldozerPosition]);
 
 
   return(
-    <div style={style}>
+    <div style={finalMapStyle}>
       {finalSiteMap}
     </div>
   )

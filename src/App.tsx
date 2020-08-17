@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import { Provider } from "react-redux";
 import store from "./redux/store/store"
 import Simulator from "./components/Simulator"
 
 function App() {
-
-  useEffect(() => {
-    console.log(store.getState());
-  })
 
   return (
     <div className="App">

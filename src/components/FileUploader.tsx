@@ -4,16 +4,18 @@ import { Uppy } from "@uppy/core";
 import '@uppy/core/dist/style.css'
 import '@uppy/dashboard/dist/style.css'
 import { connect } from "react-redux";
-import { UpdateSiteMap } from "../redux/actions/actions";
+import { UpdateSiteMap, UpdateMapWidth, UpdateMapHeight } from "../redux/actions/actions";
 import store from "../redux/store/store";
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
       UpdateSiteMap: (siteMap: string[][]) => dispatch(UpdateSiteMap(siteMap)),
+      UpdateMapWidth: (width: number) => dispatch(UpdateMapWidth(width)),
+      UpdateMapHeight: (height: number) => dispatch(UpdateMapWidth(height))
     };
   }
 
-const ConnectedFileUpload = () => {
+const ConnectedFileUploader = () => {
 
     const uppy = React.useMemo(() => {
       return new Uppy({
@@ -44,10 +46,14 @@ const ConnectedFileUpload = () => {
     });
 
     uppy.on('error', (error) => {
-        console.error(error.stack)
+        console.error(error.stack);
     });
 
-    const buildMapFromFile = (file: string[]) => {
+    /**
+     * Build the map from the file and update the redux state with the new map
+     * @param file the file in string array format. Each entry represents a row of the file.
+     */
+    const buildMapFromFile = (file: string[]): void => {
         const rows: number = file.length;
         const columns: number = file[0].length;
 
@@ -57,17 +63,16 @@ const ConnectedFileUpload = () => {
             let row: string[] = file[i].split(" ");
             uploadedMap[i] = row;
         }
-
         store.dispatch(UpdateSiteMap(uploadedMap));
+        store.dispatch(UpdateMapWidth(uploadedMap[0].length));
+        store.dispatch(UpdateMapHeight(uploadedMap.length));
     }
   
     return (
-        <div>
-            <Dashboard uppy={uppy}/>
-        </div>
+        <Dashboard uppy={uppy}/>
     )
   }
 
-const FileUpload = connect(null, mapDispatchToProps)(ConnectedFileUpload);
+const FileUploader = connect(null, mapDispatchToProps)(ConnectedFileUploader);
 
-export default FileUpload;
+export default FileUploader;
