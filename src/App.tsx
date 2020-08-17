@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import { Provider } from "react-redux";
-import store from "./store/index"
+import store from "./redux/store/store"
 import Simulator from "./components/Simulator"
 
 function App() {

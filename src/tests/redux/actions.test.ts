@@ -67,12 +67,15 @@ describe('actions', () => {
     });
 
     it('should create an action to update square land type', () => {
-        const newLandType: ELandType = ELandType.o;
+        const bulldozerPosition: IBulldozerPosition = {
+            xPos: 1,
+            yPos: 1
+        }
         const expectedAction = {
             type: types.UPDATE_LAND_TYPE,
-            payload: newLandType
+            payload: bulldozerPosition
         }
-        expect(actions.UpdateLandType(newLandType)).toEqual(expectedAction);
+        expect(actions.UpdateLandType(bulldozerPosition)).toEqual(expectedAction);
     });
 
     it('should create an action to update fuel used', () => {

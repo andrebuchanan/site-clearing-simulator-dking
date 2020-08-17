@@ -3,8 +3,8 @@ import MapSquare from "./MapSquare";
 import Bulldozer from "./Bulldozer";
 import { ISiteMapProps, IMapBorders } from "../interfaces";
 import { connect } from "react-redux";
-import { UpdateMapBorders } from "../actions";
-import store from "../store";
+import { UpdateMapBorders } from "../redux/actions/actions";
+import store from "../redux/store/store";
 
 const mapStateToProps = (state:  any/*TODO */) => {
   return { 

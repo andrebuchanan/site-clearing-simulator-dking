@@ -7,6 +7,7 @@ import store from '../redux/store/store';
 import { connect } from 'react-redux';
 import { UpdateBulldozerDirection, UpdateSimulationInProgress } from "../redux/actions/actions";
 import CostSummary from './CostSummary';
+import FileUpload from './FileUpload';
 
 const mapStateToProps = (state:  any/*TODO */) => {
   return { 
@@ -53,7 +54,8 @@ const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISi
 
   return(
     <div>
-      {isSimulationInProgress ? 
+      <FileUpload/>
+      {/* {isSimulationInProgress ? 
       <>
         <SiteMap/>
         <UserControls HandleUserCommandCallback={HandleUserCommand}/>
@@ -61,7 +63,7 @@ const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISi
       <>
         <div>SIMULATION OVER</div>
         <CostSummary/>
-      </>}
+      </>} */}
     </div>
     
   )

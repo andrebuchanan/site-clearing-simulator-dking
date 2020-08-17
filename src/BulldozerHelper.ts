@@ -1,4 +1,4 @@
-import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand, ELandType } from "./interfaces"
+import { IBulldozerPosition, EBulldozerDirection, EUserCommand, ELandType } from "./interfaces"
 import store from './redux/store/store';
 import { UpdateSimulationInProgress, UpdateBulldozerPosition, UpdateLandType } from "./redux/actions/actions";
 import { calculateFuelUsed, calculatePaintDamage } from "./OverheadsCalculator";

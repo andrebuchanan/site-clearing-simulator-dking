@@ -1,5 +1,5 @@
 import * as constants from "../constants/action-types"
-import { IUserCommand, IMapBorders, EBulldozerDirection, IBulldozerPosition, ELandType } from "../../interfaces"
+import { IUserCommand, IMapBorders, EBulldozerDirection, IBulldozerPosition } from "../../interfaces"
 
 const AddUserCommand = (payload: IUserCommand) => {
     return { type: constants.ADD_USER_COMMAND, payload }
@@ -21,7 +21,7 @@ const UpdateBulldozerPosition = (payload: IBulldozerPosition) => {
     return { type: constants.UPDATE_BULLDOZER_POSITION, payload }
 }
 
-const UpdateLandType = (payload: ELandType) => {
+const UpdateLandType = (payload: IBulldozerPosition) => {
     return { type: constants.UPDATE_LAND_TYPE, payload }
 }
 
@@ -33,6 +33,10 @@ const UpdatePaintDamage = (payload: number) => {
     return { type: constants.UPDATE_PAINT_DAMAGE, payload }
 }
 
+const UpdateSiteMap = (payload: string[][]) => {
+    return { type: constants.UPDATE_SITE_MAP, payload }
+}
+
 export {
     AddUserCommand,
     UpdateMapBorders,
@@ -41,5 +45,6 @@ export {
     UpdateBulldozerPosition,
     UpdateLandType,
     UpdateFuelUsed,
-    UpdatePaintDamage
+    UpdatePaintDamage,
+    UpdateSiteMap
 }

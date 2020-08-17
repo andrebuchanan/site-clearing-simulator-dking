@@ -76,7 +76,7 @@ export interface ISquareProps {
 
 export interface IReduxAction {
   type: string;
-  payload: {}
+  payload: any
 }
 
 export interface IMapBorders {
