@@ -1,6 +1,6 @@
 import { ELandType } from "./interfaces";
-import { UpdateFuelUsed, UpdatePaintDamage } from "./actions/index";
-import store from "./store/index"
+import { UpdateFuelUsed, UpdatePaintDamage } from "./redux/actions/actions";
+import store from "./redux/store/store"
 
 export const calculateFuelUsed = (targetLandType: ELandType): void => {
     let fuel: number = 0;

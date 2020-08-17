@@ -3,9 +3,9 @@ import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
 import { EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps } from "../interfaces";
 import { _updateBulldozerDirection, moveBulldozer } from "../BulldozerHelper";
-import store from '../store';
+import store from '../redux/store/store';
 import { connect } from 'react-redux';
-import { UpdateBulldozerDirection, UpdateSimulationInProgress } from "../actions/index";
+import { UpdateBulldozerDirection, UpdateSimulationInProgress } from "../redux/actions/actions";
 import CostSummary from './CostSummary';
 
 const mapStateToProps = (state:  any/*TODO */) => {
@@ -46,9 +46,7 @@ const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISi
           store.dispatch(UpdateBulldozerDirection(newDirection));
           break;
         } catch (error) {
-          //TODO
-          console.log(error);
-          break;
+          throw Error(`Error trying to update bulldozer direction`);
         }
     }
   }

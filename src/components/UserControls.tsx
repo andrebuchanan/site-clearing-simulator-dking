@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import { IUserCommand, EUserCommand, IUserCommandProps } from "../interfaces";
 import { connect } from "react-redux";
-import { AddUserCommand } from "../actions/index";
-import store from "../store/index";
+import { AddUserCommand } from "../redux/actions/actions";
+import store from "../redux/store/store";
 
 const mapDispatchToProps = (dispatch: any) => {
   return {

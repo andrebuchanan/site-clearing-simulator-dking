@@ -1,6 +1,6 @@
 import { IBulldozerPosition, EBulldozerDirection, IUserCommand, EUserCommand, ELandType } from "./interfaces"
-import store from './store';
-import { UpdateSimulationInProgress, UpdateBulldozerPosition, UpdateLandType } from "./actions/index";
+import store from './redux/store/store';
+import { UpdateSimulationInProgress, UpdateBulldozerPosition, UpdateLandType } from "./redux/actions/actions";
 import { calculateFuelUsed, calculatePaintDamage } from "./OverheadsCalculator";
 
 
@@ -73,15 +73,17 @@ export const moveBulldozer = (advanceValue: number): void => {
     siteMap = store.getState().siteMap;
 
     let targetPosition: IBulldozerPosition = getTargetPosition(currentPosition, bulldozerDirection);
+    //If Bulldozer is at the edge of the map, check if user tries to navigate outside the boundary
+    if (targetOutsideBorder(targetPosition)){
+      store.dispatch(UpdateSimulationInProgress(false));
+      return;
+    }
+    
     let targetPositionLandType: string = siteMap[targetPosition.yPos][targetPosition.xPos];
-
     //check if target position contains protected tree
     if (targetContainsProtectedTree(targetPositionLandType)) {
       store.dispatch(UpdateSimulationInProgress(false));
-    }
-    //If Bulldozer is at the edge of the map, check if user tries to navigate outside the boundary
-    else if (targetOutsideBorder(targetPosition)){
-      store.dispatch(UpdateSimulationInProgress(false));
+      return;
     } 
     //If target position contains an uncleared tree then calculate paint damage
     else {
@@ -89,7 +91,7 @@ export const moveBulldozer = (advanceValue: number): void => {
         //Only 2 edge cases for paint damage
         //1. The advance value > 1 and there is an uncleared tree in the target position
         //2. It is not the last move of the advance and there is an uncleared tree in the target position
-        if (advanceValue > 1 || i !== advanceValue-1) {
+        if (advanceValue > 1 && i !== advanceValue-1) {
           calculatePaintDamage();
         }
       }
@@ -100,7 +102,6 @@ export const moveBulldozer = (advanceValue: number): void => {
       //calculate cost of moving into new square
       calculateFuelUsed(targetPositionLandType as ELandType);
     }
-
   }
 }
 

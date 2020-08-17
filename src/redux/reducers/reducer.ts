@@ -1,4 +1,4 @@
-import { IUserCommand, IBulldozerPosition, EBulldozerDirection, ELandType, IInitialState } from "../interfaces";
+import { IUserCommand, IBulldozerPosition, EBulldozerDirection, ELandType, IInitialState } from "../../interfaces";
 import { ADD_USER_COMMAND, UPDATE_MAP_BORDERS, UPDATE_SIMULATION_IN_PROGRESS,
   UPDATE_BULLDOZER_DIRECTION, UPDATE_BULLDOZER_POSITION, UPDATE_LAND_TYPE,
   UPDATE_FUEL_USED, UPDATE_PAINT_DAMAGE } from "../constants/action-types";
