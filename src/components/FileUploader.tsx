@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Dashboard } from "@uppy/react";
+import React, { useEffect, useState } from "react";
+import { DashboardModal } from "@uppy/react";
 import { Uppy } from "@uppy/core";
 import '@uppy/core/dist/style.css'
 import '@uppy/dashboard/dist/style.css'
@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { UpdateSiteMap, UpdateMapWidth, UpdateMapHeight, UpdateSimulationStatus } from "../redux/actions/actions";
 import store from "../redux/store/store";
 import { ESimulationStatus } from "../interfaces";
+import { MDBBtn } from "mdbreact";
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
@@ -18,6 +19,8 @@ const mapDispatchToProps = (dispatch: any) => {
   }
 
 const ConnectedFileUploader = () => {
+
+  const [ modalOpen, setModalOpen ] = useState(false);
 
     const uppy = React.useMemo(() => {
       return new Uppy({
@@ -51,6 +54,10 @@ const ConnectedFileUploader = () => {
         console.error(error.stack);
     });
 
+    const handleButtonClick = () => {
+      setModalOpen(true);
+    }
+
     /**
      * Build the map from the file and update the redux state with the new map
      * @param file the file in string array format. Each entry represents a row of the file.
@@ -72,7 +79,13 @@ const ConnectedFileUploader = () => {
     }
   
     return (
-        <Dashboard uppy={uppy}/>
+        <div>
+          <h2>Welcome to the Aconex Site Clearing Simulator</h2>
+          <MDBBtn color="primary" onClick={handleButtonClick}>Upload a Site Map</MDBBtn>
+          <DashboardModal
+           uppy={uppy}
+           open={modalOpen}/>
+        </div>
     )
   }
 

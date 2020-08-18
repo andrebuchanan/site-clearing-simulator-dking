@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useState, SyntheticEvent, FormEvent} from "react";
 import { IUserCommand, EUserCommand, IUserCommandProps } from "../interfaces";
 import { connect } from "react-redux";
 import { AddUserCommand } from "../redux/actions/actions";
 import store from "../redux/store/store";
+import { MDBBtn, MDBInput, MDBContainer, MDBCol, MDBRow } from "mdbreact";
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
@@ -10,13 +11,12 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 }
 
-
 const ConnectedUserControls = ({ HandleUserCommandCallback }: IUserCommandProps) => {
 
   const [advanceValue, setAdvanceValue] = useState("");
   let userCommand: IUserCommand;
 
-  const handleSubmit = (e : React.MouseEvent<HTMLElement>) => {
+  const handleSubmit = (e : FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     userCommand = {
@@ -35,7 +35,7 @@ const ConnectedUserControls = ({ HandleUserCommandCallback }: IUserCommandProps)
     );
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (e: SyntheticEvent<HTMLButtonElement, Event>) => {
     switch(e.currentTarget.id){
       case "left":
         userCommand = {
@@ -66,17 +66,24 @@ const ConnectedUserControls = ({ HandleUserCommandCallback }: IUserCommandProps)
 
   return(
     <div>
-      <form>
-        <label>Advance</label>
-        <input
-          type='number'
-          onChange={(val) => setAdvanceValue(val.currentTarget.value)}
-        />
-        <input type='submit' onClick={(e) => handleSubmit(e)}/>
-      </form>
-      <button id="left" onClick={(e) => handleClick(e)}>Left</button>
-      <button id="right" onClick={(e) => handleClick(e)}>Right</button>
-      <button id="quit" onClick={(e) => handleClick(e)}>Quit</button>
+      <MDBContainer>
+        <MDBRow>
+          <MDBCol md="6" className="todo">
+            <form
+              onSubmit={(e) => handleSubmit(e)}>
+              <MDBInput
+                className="UserInputField"
+                label="Advance Value"
+                type='number'
+                onChange={(val) => setAdvanceValue(val.currentTarget.value)}
+              />
+            </form>
+          </MDBCol>
+        </MDBRow>
+        <MDBBtn color="primary" id="left" onClick={(e) => handleClick(e)}>Left</MDBBtn>
+        <MDBBtn color="primary" id="right" onClick={(e) => handleClick(e)}>Right</MDBBtn>
+        <MDBBtn color="red" id="quit" onClick={(e) => handleClick(e)}>Quit</MDBBtn>
+      </MDBContainer>
     </div>
   )
 }

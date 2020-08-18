@@ -34,7 +34,6 @@ export interface ISiteMapProps {
 }
 
 export interface IBulldozerProps {
-  bulldozerPosition: IBulldozerPosition,
   bulldozerDirection: EBulldozerDirection
 }
 

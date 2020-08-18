@@ -3,3 +3,16 @@
   background-color: beige;
   height: 100vh;
 }
+
+input[type=number]{
+  width: 25vw;
+}
+
+.todo {
+  margin: 0 auto;
+}
+
+.bulldozer-img {
+  height: 100px;
+  width: 100px;
+}
