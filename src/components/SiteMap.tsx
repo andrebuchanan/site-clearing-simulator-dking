@@ -29,15 +29,17 @@ const ConnectedSiteMap = ({siteMap, mapWidth, mapHeight, bulldozerPosition}: ISi
   //Build the sitemap of JSX Elements based off of the map the user provided
   const buildSiteMap = (): void => {
 
-    //TODO find better way to initilise array
-    let items: JSX.Element[][] = [[],[],[],[]];
+    //Build a 2D array with sam structure as map but fill it with nulls
+    let items: JSX.Element[][] = Array.from(Array(mapHeight), () => Array(mapWidth).fill(null));
 
     for(let i=0;i<siteMap.length; i++){
       for(let j=0;j<siteMap[i].length; j++){
-        items[i].push(<MapSquare landType={siteMap[i][j]}/>);
+        //replace the null entries with MapSquare JSX items
+        items[i].splice(j, 1, <MapSquare landType={siteMap[i][j]}/>);
       }
     }
     //Add in the bulldozer
+    //TODO What to do here for start when outside grid???
     items[bulldozerPosition.yPos].splice(bulldozerPosition.xPos, 1, <Bulldozer/>);
 
     return setFinalSiteMap(items);
@@ -70,7 +72,11 @@ const ConnectedSiteMap = ({siteMap, mapWidth, mapHeight, bulldozerPosition}: ISi
     buildMapBorders();
     buildSiteMap();
     buildMapStyle();
-  },[bulldozerPosition]);
+  },[]);
+
+  useEffect(() => {
+    buildSiteMap();
+  }, [bulldozerPosition])
 
 
   return(

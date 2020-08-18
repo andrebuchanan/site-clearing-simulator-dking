@@ -1,29 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
-import { EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps } from "../interfaces";
+import { EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps, ESimulationStatus } from "../interfaces";
 import { _updateBulldozerDirection, moveBulldozer } from "../BulldozerHelper";
 import store from '../redux/store/store';
 import { connect } from 'react-redux';
-import { UpdateBulldozerDirection, UpdateSimulationInProgress } from "../redux/actions/actions";
+import { UpdateBulldozerDirection, UpdateSimulationStatus } from "../redux/actions/actions";
 import CostSummary from './CostSummary';
+import FileUploader from './FileUploader';
 
 const mapStateToProps = (state:  any/*TODO */) => {
   return { 
     bulldozerPosition: state.bulldozerPosition,
     bulldozerDirection: state.bulldozerDirection,
-    isSimulationInProgress: state.isSimulationInProgress
+    simulationStatus: state.simulationStatus
   };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
     UpdateBulldozerDirection: (direction: EBulldozerDirection) => dispatch(UpdateBulldozerDirection(direction)),
-    UpdateIsSimulationInProgress: (inProgress: boolean) => dispatch(UpdateSimulationInProgress(inProgress))
+    UpdateSimulationInStatus: (simulationStatus: ESimulationStatus) => dispatch(UpdateSimulationStatus(simulationStatus))
   };
 }
 
-const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISimulatorProps) => {
+const ConnectedSimulator = ( { bulldozerDirection, simulationStatus }: ISimulatorProps) => {
 
   /**
    * Used by child components to fire once user command added to state
@@ -37,7 +38,7 @@ const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISi
         moveBulldozer(cmd.value);
         break;
       case EUserCommand.quit:
-        store.dispatch(UpdateSimulationInProgress(false));
+        store.dispatch(UpdateSimulationStatus(ESimulationStatus.ended));
         break;
       case EUserCommand.left:
       case EUserCommand.right:
@@ -51,21 +52,21 @@ const ConnectedSimulator = ( { bulldozerDirection, isSimulationInProgress }: ISi
     }
   }
 
-  return(
-    <div>
-        {isSimulationInProgress ? 
-        <>
-          <SiteMap/>
-          <UserControls HandleUserCommandCallback={HandleUserCommand}/>
-        </>
-        :
-        <>
-          <div>SIMULATION OVER</div>
-          <CostSummary/>
-        </>
-      }
-    </div>
-  )
+  if (simulationStatus === ESimulationStatus.notStarted) {
+    return (<FileUploader/>)
+  } else if (simulationStatus === ESimulationStatus.inProgress) {
+    return(
+      <div>
+        <SiteMap/>
+        <UserControls HandleUserCommandCallback={HandleUserCommand}/>
+      </div>
+    )
+  } else {
+    //(simulationStatus === ESimulationStatus.ended)
+    return(
+      <CostSummary/>
+    )
+  }
 }
 
 const Simulator = connect(mapStateToProps, mapDispatchToProps)(ConnectedSimulator);

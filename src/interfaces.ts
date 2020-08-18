@@ -1,7 +1,7 @@
 export interface IInitialState {
   userCommands: IUserCommand[],
   siteMap: string[][],
-  isSimulationInProgress: boolean,
+  simulationStatus: ESimulationStatus,
   bulldozerPosition: IBulldozerPosition;
   bulldozerDirection: EBulldozerDirection,
   northBorder: number,
@@ -13,6 +13,12 @@ export interface IInitialState {
   paintDamage: number,
   mapWidth: number,
   mapHeight: number
+}
+
+export enum ESimulationStatus {
+  notStarted = "not started",
+  inProgress = "in progress",
+  ended = "ended"
 }
 
 export interface IBulldozerPosition {
@@ -34,7 +40,7 @@ export interface IBulldozerProps {
 
 export interface ISimulatorProps {
   bulldozerDirection: EBulldozerDirection,
-  isSimulationInProgress: boolean
+  simulationStatus: ESimulationStatus
 }
 
 export interface IUserCommandProps {

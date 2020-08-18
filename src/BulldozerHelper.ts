@@ -1,6 +1,6 @@
-import { IBulldozerPosition, EBulldozerDirection, EUserCommand, ELandType } from "./interfaces"
+import { IBulldozerPosition, EBulldozerDirection, EUserCommand, ELandType, ESimulationStatus } from "./interfaces"
 import store from './redux/store/store';
-import { UpdateSimulationInProgress, UpdateBulldozerPosition, UpdateLandType } from "./redux/actions/actions";
+import { UpdateSimulationStatus, UpdateBulldozerPosition, UpdateLandType } from "./redux/actions/actions";
 import { calculateFuelUsed, calculatePaintDamage } from "./OverheadsCalculator";
 
 
@@ -66,6 +66,7 @@ export const moveBulldozer = (advanceValue: number): void => {
   let bulldozerDirection: EBulldozerDirection;
   let siteMap: string[][];
 
+  //Need to loop for the number of Advance Value the user has entered
   for(let i = 0; i< advanceValue; i++) {
 
     currentPosition = store.getState().bulldozerPosition;
@@ -75,14 +76,14 @@ export const moveBulldozer = (advanceValue: number): void => {
     let targetPosition: IBulldozerPosition = getTargetPosition(currentPosition, bulldozerDirection);
     //If Bulldozer is at the edge of the map, check if user tries to navigate outside the boundary
     if (targetOutsideBorder(targetPosition)){
-      store.dispatch(UpdateSimulationInProgress(false));
+      store.dispatch(UpdateSimulationStatus(ESimulationStatus.ended));
       return;
     }
     
     let targetPositionLandType: string = siteMap[targetPosition.yPos][targetPosition.xPos];
     //check if target position contains protected tree
     if (targetContainsProtectedTree(targetPositionLandType)) {
-      store.dispatch(UpdateSimulationInProgress(false));
+      store.dispatch(UpdateSimulationStatus(ESimulationStatus.ended));
       return;
     } 
     //If target position contains an uncleared tree then calculate paint damage

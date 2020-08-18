@@ -1,11 +1,11 @@
-import { EBulldozerDirection, ELandType, IInitialState, IReduxAction } from "../../interfaces";
+import { EBulldozerDirection, ELandType, IInitialState, IReduxAction, ESimulationStatus } from "../../interfaces";
 import * as constants  from "../constants/action-types";
 
 //TODO Move this to a new file
 const initialState: IInitialState = {
   userCommands: [],
   siteMap: [],
-  isSimulationInProgress: true,  
+  simulationStatus: ESimulationStatus.notStarted,  
   bulldozerPosition: { xPos: 0, yPos: 0 },
   bulldozerDirection: EBulldozerDirection.east,
   northBorder: 0,
@@ -33,9 +33,9 @@ const rootReducer = (state = initialState,  action: IReduxAction ) => {
         eastBorder: action.payload.eastBorder,
         southBorder: action.payload.southBorder
       });
-    case constants.UPDATE_SIMULATION_IN_PROGRESS:
+    case constants.UPDATE_SIMULATION_STATUS:
       return Object.assign({}, state, {
-        isSimulationInProgress: action.payload
+        simulationStatus: action.payload
       })
     case constants.UPDATE_BULLDOZER_DIRECTION:
       return Object.assign({}, state, {
@@ -48,7 +48,6 @@ const rootReducer = (state = initialState,  action: IReduxAction ) => {
     case constants.UPDATE_LAND_TYPE:
       const mapCopy: string[][] = [...state.siteMap];
       mapCopy[action.payload.yPos].splice(action.payload.xPos, 1, ELandType.o);
-      console.log(`landtype after cleared ${mapCopy[action.payload.yPos][action.payload.xPos]}`);
       return Object.assign({}, state, {
         siteMap: mapCopy
       })

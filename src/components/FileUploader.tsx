@@ -4,14 +4,16 @@ import { Uppy } from "@uppy/core";
 import '@uppy/core/dist/style.css'
 import '@uppy/dashboard/dist/style.css'
 import { connect } from "react-redux";
-import { UpdateSiteMap, UpdateMapWidth, UpdateMapHeight } from "../redux/actions/actions";
+import { UpdateSiteMap, UpdateMapWidth, UpdateMapHeight, UpdateSimulationStatus } from "../redux/actions/actions";
 import store from "../redux/store/store";
+import { ESimulationStatus } from "../interfaces";
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
       UpdateSiteMap: (siteMap: string[][]) => dispatch(UpdateSiteMap(siteMap)),
       UpdateMapWidth: (width: number) => dispatch(UpdateMapWidth(width)),
-      UpdateMapHeight: (height: number) => dispatch(UpdateMapWidth(height))
+      UpdateMapHeight: (height: number) => dispatch(UpdateMapWidth(height)),
+      UpdateSimulationStatus: (status: ESimulationStatus) => dispatch(UpdateSimulationStatus(status))
     };
   }
 
@@ -66,6 +68,7 @@ const ConnectedFileUploader = () => {
         store.dispatch(UpdateSiteMap(uploadedMap));
         store.dispatch(UpdateMapWidth(uploadedMap[0].length));
         store.dispatch(UpdateMapHeight(uploadedMap.length));
+        store.dispatch(UpdateSimulationStatus(ESimulationStatus.inProgress));
     }
   
     return (
