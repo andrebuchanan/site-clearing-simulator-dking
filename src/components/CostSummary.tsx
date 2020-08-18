@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux";
-import { ELandType, ICostSummaryProps } from "../interfaces";
+import { ELandType, ICostSummaryProps, EUserCommand } from "../interfaces";
 
 const mapStateToProps = (state:  any/*TODO */) => {
     return { 
@@ -13,10 +13,25 @@ const mapStateToProps = (state:  any/*TODO */) => {
 
 const ConnectedCostSummary = ({fuelUsed, siteMap, userCommands, paintDamage}: ICostSummaryProps) => {
 
+    const [ userCommandsList, setUserCommandsList ] = useState<string[]>([])
     const [fuelCost, setFuelCost] = useState<number>(0);
     const [unclearedSquaresCost, setUnclearedSquaresCost] = useState<number>(0);
     const [communicationCost, setCommunicationCost] = useState<number>(0);
     const [paintDamageCost, setPaintDamageCost] = useState<number>(0);
+
+    const buildUserCommandList = (): void => {
+        const cmds: string[] = []
+        for(let cmd of userCommands){
+            if (cmd.command === EUserCommand.advance){
+                cmds.push(`Advance ${cmd.value}, `);
+            } else if (cmd.command === EUserCommand.quit) {
+                cmds.push("quit");
+            } else {
+                cmds.push(`${cmd.command} turn, `);
+            }
+        }
+        setUserCommandsList(cmds);
+    }
 
     const calculateFuelCost = (): void => {
         setFuelCost(fuelUsed);
@@ -53,6 +68,7 @@ const ConnectedCostSummary = ({fuelUsed, siteMap, userCommands, paintDamage}: IC
     }
 
     useEffect(() => {
+        buildUserCommandList();
         calculateFuelCost();
         calculateUnclearedSquaresCost();
         calculateCommunicationCost();
@@ -60,16 +76,20 @@ const ConnectedCostSummary = ({fuelUsed, siteMap, userCommands, paintDamage}: IC
     }, [])
 
     return(
-    <div>
-        Fuel Cost: {fuelCost}
+    <div className="costSummary">
+        <h1>Simulation Ended</h1>
         <br/>
-        Uncleared Squares Cost: {unclearedSquaresCost}
+        <h3>Fuel Cost: {fuelCost}</h3>
         <br/>
-        Communication Overhead Cost: {communicationCost}
+        <h3>Uncleared Squares Cost: {unclearedSquaresCost}</h3>
         <br/>
-        Paint Damage Repair Cost: {paintDamageCost}
+        <h3>Communication Overhead Cost: {communicationCost}</h3>
         <br/>
-        Total Cost: {fuelCost + unclearedSquaresCost + communicationCost + paintDamageCost}
+        <h3>Paint Damage Repair Cost: {paintDamageCost}</h3>
+        <br/>
+        <h3>Total Cost: {fuelCost + unclearedSquaresCost + communicationCost + paintDamageCost}</h3>
+        <br/>
+        <h5>Commands Entered: {userCommandsList}</h5>
     </div>
     );
 }

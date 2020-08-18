@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 }
 
-const ConnectedSimulator = ( { bulldozerDirection, simulationStatus }: ISimulatorProps) => {
+const ConnectedSimulator = ( { bulldozerPosition, bulldozerDirection, simulationStatus }: ISimulatorProps) => {
 
   /**
    * Used by child components to fire once user command added to state
@@ -56,7 +56,7 @@ const ConnectedSimulator = ( { bulldozerDirection, simulationStatus }: ISimulato
     return (<FileUploader/>)
   } else if (simulationStatus === ESimulationStatus.inProgress) {
     return(
-      <div>
+      <div className="">
         <SiteMap/>
         <UserControls HandleUserCommandCallback={HandleUserCommand}/>
       </div>

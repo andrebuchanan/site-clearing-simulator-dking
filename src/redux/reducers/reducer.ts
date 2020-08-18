@@ -6,7 +6,7 @@ const initialState: IInitialState = {
   userCommands: [],
   siteMap: [],
   simulationStatus: ESimulationStatus.notStarted,  
-  bulldozerPosition: { xPos: 0, yPos: 0 },
+  bulldozerPosition: { xPos: -1, yPos: 0 },
   bulldozerDirection: EBulldozerDirection.east,
   northBorder: 0,
   southBorder: 0,

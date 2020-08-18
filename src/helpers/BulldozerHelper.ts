@@ -97,12 +97,22 @@ export const moveBulldozer = (advanceValue: number): void => {
         }
       }
       //update landType to cleared
-      //TODO Move these to their own helper?
-      store.dispatch(UpdateLandType(currentPosition));
+      changeLandTypeOfPosition(currentPosition);
       store.dispatch(UpdateBulldozerPosition(targetPosition));
       //calculate cost of moving into new square
       calculateFuelUsed(targetPositionLandType as ELandType);
     }
+  }
+}
+
+/**
+ * 
+ * @param position The position on the grid to chnage
+ */
+export const changeLandTypeOfPosition = (position: IBulldozerPosition): void => {
+  //Check the position to change is not the starting position (outside grid)
+  if(position.xPos !== -1) {
+    store.dispatch(UpdateLandType(position));
   }
 }
 

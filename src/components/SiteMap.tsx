@@ -39,8 +39,10 @@ const ConnectedSiteMap = ({siteMap, mapWidth, mapHeight, bulldozerPosition}: ISi
       }
     }
     //Add in the bulldozer
-    //TODO What to do here for start when outside grid???
-    items[bulldozerPosition.yPos].splice(bulldozerPosition.xPos, 1, <Bulldozer/>);
+    if (bulldozerPosition.xPos !== -1){
+      items[bulldozerPosition.yPos].splice(bulldozerPosition.xPos, 1, <Bulldozer/>);
+    }
+    
 
     return setFinalSiteMap(items);
   }

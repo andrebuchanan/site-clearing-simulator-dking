@@ -2,6 +2,7 @@
   text-align: center;
   background-color: beige;
   height: 100vh;
+  display: grid;
 }
 
 input[type=number]{
@@ -9,7 +10,15 @@ input[type=number]{
 }
 
 .todo {
-  margin: 0 auto;
+  margin: auto;
+}
+
+.costSummary {
+  margin: auto;
+}
+
+.fileUploadWelcomeScreen {
+  margin: auto;
 }
 
 .bulldozer-img {

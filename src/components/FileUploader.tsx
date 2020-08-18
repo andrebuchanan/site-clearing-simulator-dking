@@ -6,7 +6,7 @@ import '@uppy/dashboard/dist/style.css'
 import { connect } from "react-redux";
 import { UpdateSiteMap, UpdateMapWidth, UpdateMapHeight, UpdateSimulationStatus } from "../redux/actions/actions";
 import store from "../redux/store/store";
-import { ESimulationStatus } from "../interfaces";
+import { ESimulationStatus, ELandType } from "../interfaces";
 import { MDBBtn } from "mdbreact";
 
 const mapDispatchToProps = (dispatch: any) => {
@@ -42,7 +42,7 @@ const ConnectedFileUploader = () => {
      */
     uppy.on('complete', (result) => {
         const reader = new FileReader();
-        const dataToRead = result.successful[0].data; 
+        const dataToRead = result.successful[0].data;
         reader.readAsText(dataToRead);
         reader.onload = () => {
             let data: string[] = (reader.result as string).split("\n");
@@ -50,10 +50,17 @@ const ConnectedFileUploader = () => {
         };
     });
 
+    /**
+     * On file upload error, throw an error
+     */
     uppy.on('error', (error) => {
-        console.error(error.stack);
+        throw Error(`File Upload Error: ${error}`);
     });
 
+    /**
+     * Handle Button click
+     * Opens the File Upload Modal
+     */
     const handleButtonClick = () => {
       setModalOpen(true);
     }
@@ -68,18 +75,73 @@ const ConnectedFileUploader = () => {
 
         // Create an empty 2D Array matching structure of uploaded file
         let uploadedMap: string[][] = Array.from(Array(rows), () => Array(columns).fill(""));
+
         for(let i = 0; i < uploadedMap.length; i++){
             let row: string[] = file[i].split(" ");
+
+            //Note
+            //Weird Bug where last character in row has a space appended to end of string eg: "o ",
+            //So remove last char and edit it
+            let lastchar: string | undefined = row.pop();
+            if (lastchar){
+              lastchar = lastchar.charAt(0);
+              row.push(lastchar);
+            }
+            
+
+            //Check the land types of the row are valid;
+            if(!checkValidLandType(row)){
+              throw Error("Invalid File Upload. Map letters must be one of {o, t, r, T}");
+            }
             uploadedMap[i] = row;
         }
-        store.dispatch(UpdateSiteMap(uploadedMap));
-        store.dispatch(UpdateMapWidth(uploadedMap[0].length));
-        store.dispatch(UpdateMapHeight(uploadedMap.length));
-        store.dispatch(UpdateSimulationStatus(ESimulationStatus.inProgress));
+        
+        if (checkFileUploadedIsValid(uploadedMap)){
+          store.dispatch(UpdateSiteMap(uploadedMap));
+          store.dispatch(UpdateMapWidth(uploadedMap[0].length));
+          store.dispatch(UpdateMapHeight(uploadedMap.length));
+          store.dispatch(UpdateSimulationStatus(ESimulationStatus.inProgress));
+        } else {
+          throw Error("Invlaid File Upload. Uploaded files must have the same number of entries per row");
+        }
+
+        
+    }
+
+    /**
+     * Checks that the land type strings in the uploaded maps are valid
+     * @param arr The array of strings representing a row in the map
+     * @returns boolean - true of the land types are valid
+     */
+    const checkValidLandType = (arr: string[]): boolean => {
+      for(let letter of arr){
+
+        if(letter !== ELandType.o
+          && letter !== ELandType.r
+          && letter !== ELandType.t
+          && letter !== ELandType.T){
+          return false;
+        }
+      }
+      return true;
+    }
+
+    const checkFileUploadedIsValid = (file: string[][]): boolean => {
+
+      let valid: boolean;
+      const columns: number = file[0].length;
+      //Check that each row has same number of entries
+      valid = file.every((row) => {
+        return row.length === columns;
+      });
+      if(!valid) {
+        return false
+      }
+      return true;
     }
   
     return (
-        <div>
+        <div className="fileUploadWelcomeScreen">
           <h2>Welcome to the Aconex Site Clearing Simulator</h2>
           <MDBBtn color="primary" onClick={handleButtonClick}>Upload a Site Map</MDBBtn>
           <DashboardModal

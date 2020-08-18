@@ -1,16 +1,10 @@
-import { ELandType } from "./interfaces";
-import { UpdateFuelUsed, UpdatePaintDamage } from "./redux/actions/actions";
-import store from "./redux/store/store"
+import { ELandType } from "../interfaces";
+import { UpdateFuelUsed, UpdatePaintDamage } from "../redux/actions/actions";
+import store from "../redux/store/store"
 
 export const calculateFuelUsed = (targetLandType: ELandType): void => {
     let fuel: number = 0;
     let landType: string = targetLandType;
-
-    //Weird Bug where last character in row has a space appended to end of string eg: "o ",
-    //causing switch statement to fail
-    if (targetLandType.length === 2){
-        landType = targetLandType.charAt(0);
-    }
 
     switch(landType){
         case ELandType.o:

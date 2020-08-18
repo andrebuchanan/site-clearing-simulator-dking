@@ -1,6 +1,6 @@
 import * as actions from "../../redux/actions/actions";
 import * as types from "../../redux/constants/action-types";
-import { IUserCommand, EUserCommand, IMapBorders, EBulldozerDirection, IBulldozerPosition, ELandType } from "../../interfaces";
+import { IUserCommand, EUserCommand, IMapBorders, EBulldozerDirection, IBulldozerPosition, ESimulationStatus } from "../../interfaces";
 
 describe('actions', () => {
   it('should create an action to add a user command', () => {
@@ -28,12 +28,12 @@ describe('actions', () => {
     });
 
     it('should create an action to update simulation in progress', () => {
-        const simulationInProgress: boolean = false;
+        const simulationStatus: ESimulationStatus = ESimulationStatus.inProgress
         const expectedAction = {
-            type: types.UPDATE_SIMULATION_IN_PROGRESS,
-            payload: simulationInProgress
+            type: types.UPDATE_SIMULATION_STATUS,
+            payload: simulationStatus
         }
-        expect(actions.UpdateSimulationInProgress(simulationInProgress)).toEqual(expectedAction);
+        expect(actions.UpdateSimulationStatus(simulationStatus)).toEqual(expectedAction);
     });
 
     it('should create an action to update bulldozer direction', () => {

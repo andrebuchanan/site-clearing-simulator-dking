@@ -38,6 +38,7 @@ export interface IBulldozerProps {
 }
 
 export interface ISimulatorProps {
+  bulldozerPosition: IBulldozerPosition,
   bulldozerDirection: EBulldozerDirection,
   simulationStatus: ESimulationStatus
 }
@@ -61,10 +62,10 @@ export enum EBulldozerDirection {
 }
 
 export enum EUserCommand {
-  advance,
-  left,
-  right,
-  quit
+  advance = "advance",
+  left = "left",
+  right = "right",
+  quit = "quit"
 }
 
 export enum ELandType {
