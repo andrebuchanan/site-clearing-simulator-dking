@@ -1,6 +1,6 @@
-import { IBulldozerPosition, EBulldozerDirection, EUserCommand, ELandType, ESimulationStatus } from "./interfaces"
-import store from './redux/store/store';
-import { UpdateSimulationStatus, UpdateBulldozerPosition, UpdateLandType } from "./redux/actions/actions";
+import { IBulldozerPosition, EBulldozerDirection, EUserCommand, ELandType, ESimulationStatus } from "../interfaces"
+import store from '../redux/store/store';
+import { UpdateSimulationStatus, UpdateBulldozerPosition, UpdateLandType } from "../redux/actions/actions";
 import { calculateFuelUsed, calculatePaintDamage } from "./OverheadsCalculator";
 
 
@@ -66,7 +66,7 @@ export const moveBulldozer = (advanceValue: number): void => {
   let bulldozerDirection: EBulldozerDirection;
   let siteMap: string[][];
 
-  //Need to loop for the number of Advance Value the user has entered
+  //Need to loop for the number of Advance Value the user has entere
   for(let i = 0; i< advanceValue; i++) {
 
     currentPosition = store.getState().bulldozerPosition;

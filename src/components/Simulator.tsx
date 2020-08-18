@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
 import { EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps, ESimulationStatus } from "../interfaces";
-import { _updateBulldozerDirection, moveBulldozer } from "../BulldozerHelper";
+import { _updateBulldozerDirection, moveBulldozer } from "../helpers/BulldozerHelper";
 import store from '../redux/store/store';
 import { connect } from 'react-redux';
 import { UpdateBulldozerDirection, UpdateSimulationStatus } from "../redux/actions/actions";
