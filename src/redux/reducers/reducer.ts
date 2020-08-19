@@ -1,7 +1,6 @@
 import { EBulldozerDirection, ELandType, IInitialState, IReduxAction, ESimulationStatus } from "../../interfaces";
 import * as constants  from "../constants/action-types";
 
-//TODO Move this to a new file
 const initialState: IInitialState = {
   userCommands: [],
   siteMap: [],
@@ -20,8 +19,6 @@ const initialState: IInitialState = {
 };
 
 const rootReducer = (state = initialState,  action: IReduxAction ) => {
-  //TODO
-  //Fill root reducer with if statements for all actions
 
   switch(action.type) {
     case constants.ADD_USER_COMMAND:

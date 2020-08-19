@@ -7,9 +7,9 @@ The file must be a txt file and can only contain strings of "o", "r", "t", "T" (
 
 A React app that renders a 2 Dimensional map of different land types. The user must clear the site by moving the bulldozer around the map without removing any protected trees (T) or navigating beyond the boundaries of the map. All squares of plain land (o) and rocky land (t) should be cleared.
 The simulation ends when the user:  
-a) Clicks the quit button  
-b) Attempts to navigate beyond the boundaries of the map  
-c) Attempts to clear a map square that contains a protected tree (T).  
+**a)** Clicks the quit button  
+**b)** Attempts to navigate beyond the boundaries of the map  
+**c)** Attempts to clear a map square that contains a protected tree (T).  
 
 When the simulation ends the user will be presented with an itemized report of the total cost accrewed from their simulation run.
 
@@ -67,3 +67,6 @@ You must have git, node & npm installed on your local machine.
 1. Clone this repo
 2. run `npm install`
 3. run `npm start`
+
+You will need a txt file that obeys the rules 3 & 4 defined above in the Assumptions Made Section.
+There are also some sample maps in the project: `src/resources/testMaps`.

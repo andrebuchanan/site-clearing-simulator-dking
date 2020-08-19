@@ -9,8 +9,10 @@ import { UpdateBulldozerDirection, UpdateSimulationStatus, UpdateBulldozerPositi
 import CostSummary from './CostSummary';
 import FileUploader from './FileUploader';
 import { calculatePaintDamage, calculateFuelUsed } from '../helpers/OverheadsCalculator';
+import Bulldozer from './Bulldozer';
+import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 
-const mapStateToProps = (state:  any/*TODO */) => {
+const mapStateToProps = (state: ISimulatorProps) => {
   return { 
     bulldozerPosition: state.bulldozerPosition,
     bulldozerDirection: state.bulldozerDirection,
@@ -123,10 +125,10 @@ const ConnectedSimulator = ( { bulldozerPosition, bulldozerDirection, simulation
     return (<FileUploader/>)
   } else if (simulationStatus === ESimulationStatus.inProgress) {
     return(
-      <div className="">
+      <MDBContainer className="siteMapContainer">
         <SiteMap/>
         <UserControls HandleUserCommandCallback={HandleUserCommand}/>
-      </div>
+      </MDBContainer>
     )
   } else {
     //(simulationStatus === ESimulationStatus.ended)

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { connect } from "react-redux";
 import { ELandType, ICostSummaryProps, EUserCommand } from "../interfaces";
 
-const mapStateToProps = (state:  any/*TODO */) => {
+const mapStateToProps = (state: ICostSummaryProps) => {
     return { 
       fuelUsed: state.fuelUsed,
       siteMap: state.siteMap,

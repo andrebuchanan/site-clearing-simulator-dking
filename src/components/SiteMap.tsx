@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { UpdateMapBorders } from "../redux/actions/actions";
 import store from "../redux/store/store";
 
-const mapStateToProps = (state:  any/*TODO */) => {
+const mapStateToProps = (state: ISiteMapProps) => {
   return { 
     siteMap: state.siteMap,
     mapWidth: state.mapWidth,
