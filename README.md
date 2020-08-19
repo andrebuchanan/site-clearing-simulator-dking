@@ -6,29 +6,42 @@ User is asked to upload a txt file from their local machine which will be used t
 The file must be a txt file and can only contain strings of "o", "r", "t", "T" (representing the land types of the map).
 
 A React app that renders a 2 Dimensional map of different land types. The user must clear the site by moving the bulldozer around the map without removing any protected trees (T) or navigating beyond the boundaries of the map. All squares of plain land (o) and rocky land (t) should be cleared.
-The simulation ends when the user:
-a) Clicks the quit button
-b) Attempts to navigate beyond the boundaries of the map
-c) Attempts to clear a map square that contains a protected tree (T).
+The simulation ends when the user:  
+a) Clicks the quit button  
+b) Attempts to navigate beyond the boundaries of the map  
+c) Attempts to clear a map square that contains a protected tree (T).  
 
 When the simulation ends the user will be presented with an itemized report of the total cost accrewed from their simulation run.
 
 
 ### Technologies Used
-Typescript
-React
-Redux
-Uppy (file upload library)
-MDBReact (UI Toolkit library)
-Enzyme (React Component Testing Library)
+Typescript  
+React  
+Redux  
+Uppy (file upload library)  
+MDBReact (UI Toolkit library)  
+Enzyme (React Component Testing Library)  
+
+### Assumptions Made
+1. The top left corner of the map has x,y coordinates of {0,0}  
+2. The starting position of the bulldozer has x,y coordinates of {-1, 0}  
+3. A valid site map must contain rows of equal number of string characters.
+4. Valid map strings are o r t T.
+
+##### Example map
+ttoo  
+rrTo  
+oTTo  
+rrrr  
+
 
 ### Structure of the solution
 The App is split into various React components each handling a specific part of the logic and rendering.
 
 #### Simulator.tsx
-React component that handles the main logic of the simulator. It renders different react components depending on the SimulatorStatus property in the Redux Store.
-If the `simulationStatus === notStarted` then it will render the `FileUpload.tsx` Component.
-If the `simulationStatus === inProgress` then it will render the `SiteMap.tsx` and `UserControls.tsx` components.
+React component that handles the main logic of the simulator. It renders different react components depending on the SimulatorStatus property in the Redux Store.  
+If the `simulationStatus === notStarted` then it will render the `FileUpload.tsx` Component.  
+If the `simulationStatus === inProgress` then it will render the `SiteMap.tsx` and `UserControls.tsx` components.  
 If the `simulationStatus === ended` then it will render the `CostSummary.tsx` component.
 
 The simulator also handles the moving of the bulldozer around the map. The `moveBulldozer()` function does a lot of the heavy lifting and is responsible for updating a lot of the relevant state in the Redux store.
@@ -47,3 +60,10 @@ React component that handles all user input to the simulator.
 
 #### CostSummary
 React component that displays the cost summary of the users actions.
+
+## How to Run
+You must have git, node & npm installed on your local machine.
+
+1. Clone this repo
+2. run `npm install`
+3. run `npm start`
