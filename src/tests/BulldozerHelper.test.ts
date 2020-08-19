@@ -1,5 +1,5 @@
-import { _updateBulldozerDirection, targetOutsideBorder } from "../helpers/BulldozerHelper";
-import  { EBulldozerDirection, EUserCommand, IBulldozerPosition, IUserCommand, IMapBorders } from "../interfaces";
+import { _updateBulldozerDirection, targetOutsideBorder, getTargetPosition, targetContainsProtectedTree, targetContainsUnclearedTree } from "../helpers/BulldozerHelper";
+import  { EBulldozerDirection, EUserCommand, IBulldozerPosition, IUserCommand, IMapBorders, ELandType } from "../interfaces";
 
 describe("_updateBulldozerDirection", () => {
 
@@ -82,7 +82,7 @@ describe("_updateBulldozerDirection", () => {
     });
 });
 
-describe("TargetOutsideBorder", () => {
+describe("targetOutsideBorder", () => {
     const mapBorders: IMapBorders = {
         eastBorder: 4,
         southBorder: 4
@@ -135,3 +135,108 @@ describe("TargetOutsideBorder", () => {
     });
 
 });
+
+describe("getTargetPosition", () => {
+    const currentPosition: IBulldozerPosition = {
+        xPos: 2,
+        yPos: 2
+    }
+    let expectedPosition: IBulldozerPosition;
+    let currentDirection: EBulldozerDirection;
+
+    it("get postion directly to east when facing east", () => {
+        currentDirection = EBulldozerDirection.east
+        expectedPosition = {
+            xPos: 3,
+            yPos: 2
+        }
+
+        expect(getTargetPosition(currentPosition, currentDirection)).toEqual(expectedPosition);
+    });
+
+    it("get postion directly to north when facing north", () => {
+        currentDirection = EBulldozerDirection.north
+        expectedPosition = {
+            xPos: 2,
+            yPos: 1
+        }
+
+        expect(getTargetPosition(currentPosition, currentDirection)).toEqual(expectedPosition);
+    });
+
+    it("get postion directly to west when facing west", () => {
+        currentDirection = EBulldozerDirection.west
+        expectedPosition = {
+            xPos: 1,
+            yPos: 2
+        }
+
+        expect(getTargetPosition(currentPosition, currentDirection)).toEqual(expectedPosition);
+    });
+
+    it("get postion directly to south when facing south", () => {
+        currentDirection = EBulldozerDirection.south
+        expectedPosition = {
+            xPos: 2,
+            yPos: 3
+        }
+
+        expect(getTargetPosition(currentPosition, currentDirection)).toEqual(expectedPosition);
+    });
+})
+
+describe("targetContainsProtectedTree", () => {
+    let targetPositionLandType: ELandType;
+
+    it("contains a protected tree", () => {
+        targetPositionLandType = ELandType.T;
+
+        expect(targetContainsProtectedTree(targetPositionLandType)).toEqual(true);
+    });
+
+    it("contains rocky land", () => {
+        targetPositionLandType = ELandType.r;
+
+        expect(targetContainsProtectedTree(targetPositionLandType)).toEqual(false);
+    });
+
+    it("contains unprotected tree", () => {
+        targetPositionLandType = ELandType.t;
+
+        expect(targetContainsProtectedTree(targetPositionLandType)).toEqual(false);
+    });
+
+    it("contains plain land", () => {
+        targetPositionLandType = ELandType.o;
+
+        expect(targetContainsProtectedTree(targetPositionLandType)).toEqual(false);
+    });
+})
+
+describe("targetContainsUnclearedTree", () => {
+    let targetPositionLandType: ELandType;
+
+    it("contains uncleared tree", () => {
+        targetPositionLandType = ELandType.t;
+
+        expect(targetContainsUnclearedTree(targetPositionLandType)).toEqual(true);
+    });
+
+    it("contains rocky land", () => {
+        targetPositionLandType = ELandType.r;
+
+        expect(targetContainsUnclearedTree(targetPositionLandType)).toEqual(false);
+    });
+
+    it("contains protected tree", () => {
+        targetPositionLandType = ELandType.T;
+
+        expect(targetContainsUnclearedTree(targetPositionLandType)).toEqual(false);
+    });
+
+    it("contains plain land", () => {
+        targetPositionLandType = ELandType.o;
+
+        expect(targetContainsUnclearedTree(targetPositionLandType)).toEqual(false);
+    });
+})

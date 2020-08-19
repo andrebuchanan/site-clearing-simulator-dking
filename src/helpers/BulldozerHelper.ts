@@ -126,6 +126,11 @@ export const targetContainsProtectedTree = (targetPositionLandType: string): boo
   }
 }
 
+/**
+ * Checks if the target position contains an uncleared tree.
+ * @param targetPositionLandType The land type of the target position
+ * @returns boolean - true if the target contains an uncleared tree
+ */
 export const targetContainsUnclearedTree = (targetPositionLandType: string): boolean => {
   if (targetPositionLandType === ELandType.t) {
     return true;
