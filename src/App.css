@@ -7,7 +7,6 @@
 
 input[type=number]{
   width: 25vw;
-  margin: auto;
 }
 
 .rowStyling {
@@ -18,11 +17,6 @@ input[type=number]{
 
 .rowItem {
   align-self: center;
-}
-
-
-.todo {
-  margin: auto;
 }
 
 .costSummary {

@@ -28,11 +28,6 @@ const UserControls = ({ HandleUserCommandCallback }: IUserCommandProps) => {
     store.dispatch(AddUserCommand(userCommand));
     //call the callback with the new command
     HandleUserCommandCallback(userCommand);
-
-    //Reset the input box
-    Array.from(document.querySelectorAll("input")).forEach(
-      input => (input.value = "")
-    );
   }
 
   const handleClick = (e: SyntheticEvent<HTMLButtonElement, Event>) => {
