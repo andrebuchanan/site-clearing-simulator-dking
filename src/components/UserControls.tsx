@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch: any) => {
   };
 }
 
-const ConnectedUserControls = ({ HandleUserCommandCallback }: IUserCommandProps) => {
+const UserControls = ({ HandleUserCommandCallback }: IUserCommandProps) => {
 
   const [advanceValue, setAdvanceValue] = useState("");
   let userCommand: IUserCommand;
@@ -66,19 +66,17 @@ const ConnectedUserControls = ({ HandleUserCommandCallback }: IUserCommandProps)
 
   return(
     <div>
-      <MDBContainer>
-        <MDBRow>
-          <MDBCol md="6" className="todo">
-            <form
-              onSubmit={(e) => handleSubmit(e)}>
-              <MDBInput
-                className="UserInputField"
-                label="Advance Value"
-                type='number'
-                onChange={(val) => setAdvanceValue(val.currentTarget.value)}
-              />
-            </form>
-          </MDBCol>
+      <MDBContainer >
+        <MDBRow className="rowStyling">
+          <form
+            className="rowItem"
+            onSubmit={(e) => handleSubmit(e)}>
+            <MDBInput
+              label="Advance Value"
+              type='number'
+              onChange={(val) => setAdvanceValue(val.currentTarget.value)}
+            />
+          </form>
         </MDBRow>
         <MDBBtn color="primary" id="left" onClick={(e) => handleClick(e)}>Left</MDBBtn>
         <MDBBtn color="primary" id="right" onClick={(e) => handleClick(e)}>Right</MDBBtn>
@@ -88,6 +86,6 @@ const ConnectedUserControls = ({ HandleUserCommandCallback }: IUserCommandProps)
   )
 }
 
-const UserControls = connect(null/*mapStateToProps */, mapDispatchToProps)(ConnectedUserControls);
+const ConnectedUserControls = connect(null, mapDispatchToProps)(UserControls);
 
-export default UserControls;
+export default ConnectedUserControls;

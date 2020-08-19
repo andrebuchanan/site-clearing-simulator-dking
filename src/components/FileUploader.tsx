@@ -70,40 +70,31 @@ const ConnectedFileUploader = () => {
      * @param file the file in string array format. Each entry represents a row of the file.
      */
     const buildMapFromFile = (file: string[]): void => {
-        const rows: number = file.length;
-        const columns: number = file[0].length;
+      
+      const rows: number = file.length;
+      const columns: number = file[0].length - 1; //Unwanted whitespace
 
-        // Create an empty 2D Array matching structure of uploaded file
-        let uploadedMap: string[][] = Array.from(Array(rows), () => Array(columns).fill(""));
+      // Create an empty 2D Array matching structure of uploaded file
+      let uploadedMap: string[][] = Array.from(Array(rows), () => Array(columns).fill(""));
 
-        for(let i = 0; i < uploadedMap.length; i++){
-            let row: string[] = file[i].split(" ");
-
-            //Note
-            //Weird Bug where last character in row has a space appended to end of string eg: "o ",
-            //So remove last char and edit it
-            let lastchar: string | undefined = row.pop();
-            if (lastchar){
-              lastchar = lastchar.charAt(0);
-              row.push(lastchar);
-            }
-            
-
-            //Check the land types of the row are valid;
-            if(!checkValidLandType(row)){
-              throw Error("Invalid File Upload. Map letters must be one of {o, t, r, T}");
-            }
-            uploadedMap[i] = row;
-        }
-        
-        if (checkFileUploadedIsValid(uploadedMap)){
-          store.dispatch(UpdateSiteMap(uploadedMap));
-          store.dispatch(UpdateMapWidth(uploadedMap[0].length));
-          store.dispatch(UpdateMapHeight(uploadedMap.length));
-          store.dispatch(UpdateSimulationStatus(ESimulationStatus.inProgress));
-        } else {
-          throw Error("Invlaid File Upload. Uploaded files must have the same number of entries per row");
-        }
+      for(let i = 0; i < uploadedMap.length; i++){
+          let row: string[] = file[i].trim().split("");
+          
+          //Check the land types of the row are valid;
+          if(!checkValidLandType(row)){
+            throw Error("Invalid File Upload. Map letters must be one of {o, t, r, T}");
+          }
+          uploadedMap[i] = row;
+      }
+      
+      if (checkFileUploadedIsValid(uploadedMap)){
+        store.dispatch(UpdateSiteMap(uploadedMap));
+        store.dispatch(UpdateMapWidth(uploadedMap[0].length));
+        store.dispatch(UpdateMapHeight(uploadedMap.length));
+        store.dispatch(UpdateSimulationStatus(ESimulationStatus.inProgress));
+      } else {
+        throw Error("Invlaid File Upload. Uploaded files must have the same number of entries per row");
+      }
 
         
     }
@@ -126,6 +117,10 @@ const ConnectedFileUploader = () => {
       return true;
     }
 
+    /**
+     * 
+     * @param file the uploaded file
+     */
     const checkFileUploadedIsValid = (file: string[][]): boolean => {
 
       let valid: boolean;
