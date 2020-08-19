@@ -1,7 +1,5 @@
-import { IBulldozerPosition, EBulldozerDirection, EUserCommand, ELandType, ESimulationStatus } from "../interfaces"
-import store from '../redux/store/store';
+import { IBulldozerPosition, EBulldozerDirection, EUserCommand, ELandType, ESimulationStatus, IMapBorders } from "../interfaces"
 import { UpdateSimulationStatus, UpdateBulldozerPosition, UpdateLandType } from "../redux/actions/actions";
-import { calculateFuelUsed, calculatePaintDamage } from "./OverheadsCalculator";
 
 
 /**
@@ -55,68 +53,6 @@ export const _updateBulldozerDirection = (command: EUserCommand, bulldozerDirect
 }
 
 /**
- * Moves the x, y coordinates of the bulldozer by updating the Redux Store.
- * Will Also update the isSimulationInProgress boolean in the Redux store if the
- * user tries to make an illegal move
- * @param advanceValue - The number of squares to move forward
- */
-export const moveBulldozer = (advanceValue: number): void => {
-
-  let currentPosition: IBulldozerPosition;
-  let bulldozerDirection: EBulldozerDirection;
-  let siteMap: string[][];
-
-  //Need to loop for the number of Advance Value the user has entere
-  for(let i = 0; i< advanceValue; i++) {
-
-    currentPosition = store.getState().bulldozerPosition;
-    bulldozerDirection = store.getState().bulldozerDirection;
-    siteMap = store.getState().siteMap;
-
-    let targetPosition: IBulldozerPosition = getTargetPosition(currentPosition, bulldozerDirection);
-    //If Bulldozer is at the edge of the map, check if user tries to navigate outside the boundary
-    if (targetOutsideBorder(targetPosition)){
-      store.dispatch(UpdateSimulationStatus(ESimulationStatus.ended));
-      return;
-    }
-    
-    let targetPositionLandType: string = siteMap[targetPosition.yPos][targetPosition.xPos];
-    //check if target position contains protected tree
-    if (targetContainsProtectedTree(targetPositionLandType)) {
-      store.dispatch(UpdateSimulationStatus(ESimulationStatus.ended));
-      return;
-    } 
-    //If target position contains an uncleared tree then calculate paint damage
-    else {
-      if (targetContainsUnclearedTree(targetPositionLandType)) {
-        //Only 2 edge cases for paint damage
-        //1. The advance value > 1 and there is an uncleared tree in the target position
-        //2. It is not the last move of the advance and there is an uncleared tree in the target position
-        if (advanceValue > 1 && i !== advanceValue-1) {
-          calculatePaintDamage();
-        }
-      }
-      //update landType to cleared
-      changeLandTypeOfPosition(currentPosition);
-      store.dispatch(UpdateBulldozerPosition(targetPosition));
-      //calculate cost of moving into new square
-      calculateFuelUsed(targetPositionLandType as ELandType);
-    }
-  }
-}
-
-/**
- * 
- * @param position The position on the grid to chnage
- */
-export const changeLandTypeOfPosition = (position: IBulldozerPosition): void => {
-  //Check the position to change is not the starting position (outside grid)
-  if(position.xPos !== -1) {
-    store.dispatch(UpdateLandType(position));
-  }
-}
-
-/**
  * Fetches the x,y coordinates of the target position of the bulldozer
  * @param currentPosition The bulldozers current position
  * @param bulldozerDirection The bulldozers current direction
@@ -163,12 +99,12 @@ export const getTargetPosition = (
  * @param targetPosition The Target position of the bulldozer
  * @returns true boolean if user is trying to navigate outside boundary, false otherwise
  */
-export const targetOutsideBorder = (targetPosition: IBulldozerPosition): boolean => {
+export const targetOutsideBorder = (targetPosition: IBulldozerPosition, borders: IMapBorders): boolean => {
 
-  const northBorder: number = store.getState().northBorder;
-  const southBorder: number = store.getState().southBorder;
-  const eastBorder: number = store.getState().eastBorder;
-  const westBorder: number = store.getState().westBorder;
+  const northBorder: number = 0;
+  const southBorder: number = borders.southBorder;
+  const eastBorder: number = borders.eastBorder;
+  const westBorder: number = 0
 
   if (targetPosition.xPos < westBorder || targetPosition.xPos > eastBorder ||
     targetPosition.yPos < northBorder || targetPosition.yPos > southBorder){

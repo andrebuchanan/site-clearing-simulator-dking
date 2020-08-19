@@ -29,7 +29,7 @@ const ConnectedSiteMap = ({siteMap, mapWidth, mapHeight, bulldozerPosition}: ISi
   //Build the sitemap of JSX Elements based off of the map the user provided
   const buildSiteMap = (): void => {
 
-    //Build a 2D array with sam structure as map but fill it with nulls
+    //Build a 2D array with same structure as map but fill it with nulls
     let items: JSX.Element[][] = Array.from(Array(mapHeight), () => Array(mapWidth).fill(null));
 
     for(let i=0;i<siteMap.length; i++){
@@ -42,7 +42,6 @@ const ConnectedSiteMap = ({siteMap, mapWidth, mapHeight, bulldozerPosition}: ISi
     if (bulldozerPosition.xPos !== -1){
       items[bulldozerPosition.yPos].splice(bulldozerPosition.xPos, 1, <Bulldozer/>);
     }
-    
 
     return setFinalSiteMap(items);
   }

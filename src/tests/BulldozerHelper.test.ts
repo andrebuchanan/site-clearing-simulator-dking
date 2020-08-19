@@ -1,5 +1,5 @@
 import { _updateBulldozerDirection, targetOutsideBorder } from "../helpers/BulldozerHelper";
-import  { EBulldozerDirection, EUserCommand, IBulldozerPosition, IUserCommand } from "../interfaces";
+import  { EBulldozerDirection, EUserCommand, IBulldozerPosition, IUserCommand, IMapBorders } from "../interfaces";
 
 describe("_updateBulldozerDirection", () => {
 
@@ -83,39 +83,55 @@ describe("_updateBulldozerDirection", () => {
 });
 
 describe("TargetOutsideBorder", () => {
+    const mapBorders: IMapBorders = {
+        eastBorder: 4,
+        southBorder: 4
+    }
     let targetPosition: IBulldozerPosition;
-    const northBorder = 0, westBorder  = 0, southBorder = 5, eastBorder = 5;
 
-    it("returns false when target position is above north border", () => {
+    it("returns false when target position is within borders", () => {
+        targetPosition = {
+            xPos: 1,
+            yPos: 1
+        }
+        const outside: boolean = targetOutsideBorder(targetPosition, mapBorders);
+        expect(outside).toEqual(false);
+    });
+
+    it("returns true when target position is above north border", () => {
+        targetPosition = {
+            xPos: 0,
+            yPos: -1
+        }
+        const outside: boolean = targetOutsideBorder(targetPosition, mapBorders);
+        expect(outside).toEqual(true);
+    });
+
+    it("returns true when target position is below south border", () => {
+        targetPosition = {
+            xPos: 0,
+            yPos: 5
+        }
+        const outside: boolean = targetOutsideBorder(targetPosition, mapBorders);
+        expect(outside).toEqual(true);
+    });
+
+    it("returns true when target position is beyond east border", () => {
+        targetPosition = {
+            xPos: 5,
+            yPos: 0
+        }
+        const outside: boolean = targetOutsideBorder(targetPosition, mapBorders);
+        expect(outside).toEqual(true);
+    });
+
+    it("returns true when target position is beyond the west border", () => {
         targetPosition = {
             xPos: -1,
             yPos: 0
         }
-        const outside: boolean = targetOutsideBorder(targetPosition);
+        const outside: boolean = targetOutsideBorder(targetPosition, mapBorders);
         expect(outside).toEqual(true);
     });
 
-//     it("returns false when target position is below north border", () => {
-//         targetPosition = {
-//             xPos: -1,
-//             yPos: 0
-//         }
-//         const outside: boolean = targetOutsideBorder(targetPosition);
-//         expect(outside).toEqual(true);
-//     });
-
-// //     test("target position is below south border", () => {
-        
-// //     });
-
-// //     test("target position is beyond west border", () => {
-        
-// //     });
-
-// //     test("target position is beyond east border", () => {
-        
-// //     });
-// // })
-
-    
 });

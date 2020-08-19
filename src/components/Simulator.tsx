@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import SiteMap from "./SiteMap";
 import UserControls from "./UserControls";
-import { EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps, ESimulationStatus } from "../interfaces";
-import { _updateBulldozerDirection, moveBulldozer } from "../helpers/BulldozerHelper";
+import { EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps, ESimulationStatus, IBulldozerPosition, ELandType, IMapBorders } from "../interfaces";
+import { _updateBulldozerDirection, getTargetPosition, targetOutsideBorder, targetContainsProtectedTree, targetContainsUnclearedTree } from "../helpers/BulldozerHelper";
 import store from '../redux/store/store';
 import { connect } from 'react-redux';
-import { UpdateBulldozerDirection, UpdateSimulationStatus } from "../redux/actions/actions";
+import { UpdateBulldozerDirection, UpdateSimulationStatus, UpdateBulldozerPosition, UpdateLandType } from "../redux/actions/actions";
 import CostSummary from './CostSummary';
 import FileUploader from './FileUploader';
+import { calculatePaintDamage, calculateFuelUsed } from '../helpers/OverheadsCalculator';
 
 const mapStateToProps = (state:  any/*TODO */) => {
   return { 
@@ -49,6 +50,72 @@ const ConnectedSimulator = ( { bulldozerPosition, bulldozerDirection, simulation
         } catch (error) {
           throw Error(`Error trying to update bulldozer direction`);
         }
+    }
+  }
+
+  /**
+ * Moves the x, y coordinates of the bulldozer by updating the Redux Store.
+ * Will Also update the simulationStatus boolean in the Redux store if the
+ * user tries to make an illegal move
+ * @param advanceValue - The number of squares to move forward
+ */
+  const moveBulldozer = (advanceValue: number): void => {
+
+    let currentPosition: IBulldozerPosition;
+    let bulldozerDirection: EBulldozerDirection;
+    let siteMap: string[][];
+    const mapBorders: IMapBorders = {
+      eastBorder: store.getState().eastBorder,
+      southBorder: store.getState().southBorder
+    }
+
+    //Need to loop for the number of Advance Value the user has entere
+    for(let i = 0; i< advanceValue; i++) {
+
+      currentPosition = store.getState().bulldozerPosition;
+      bulldozerDirection = store.getState().bulldozerDirection;
+      siteMap = store.getState().siteMap;
+
+      let targetPosition: IBulldozerPosition = getTargetPosition(currentPosition, bulldozerDirection);
+      //If Bulldozer is at the edge of the map, check if user tries to navigate outside the boundary
+      if (targetOutsideBorder(targetPosition, mapBorders)){
+        store.dispatch(UpdateSimulationStatus(ESimulationStatus.ended));
+        return;
+      }
+      
+      let targetPositionLandType: string = siteMap[targetPosition.yPos][targetPosition.xPos];
+      //check if target position contains protected tree
+      if (targetContainsProtectedTree(targetPositionLandType)) {
+        store.dispatch(UpdateSimulationStatus(ESimulationStatus.ended));
+        return;
+      } 
+      //If target position contains an uncleared tree then calculate paint damage
+      else {
+        if (targetContainsUnclearedTree(targetPositionLandType)) {
+          //Only 2 edge cases for paint damage
+          //1. The advance value > 1 and there is an uncleared tree in the target position
+          //2. It is not the last move of the advance and there is an uncleared tree in the target position
+          if (advanceValue > 1 && i !== advanceValue-1) {
+            calculatePaintDamage();
+          }
+        }
+        //update landType to cleared
+        changeLandTypeOfPosition(currentPosition);
+        store.dispatch(UpdateBulldozerPosition(targetPosition));
+        //calculate cost of moving into new square
+        calculateFuelUsed(targetPositionLandType as ELandType);
+      }
+    }
+  }
+
+  /**
+   * 
+   * @param position The position on the grid to chnage
+   */
+  const changeLandTypeOfPosition = (position: IBulldozerPosition): void => {
+    //Check the position to change is not the starting position (outside grid)
+    if(position.xPos !== -1) {
+      store.dispatch(UpdateLandType(position));
     }
   }
 
