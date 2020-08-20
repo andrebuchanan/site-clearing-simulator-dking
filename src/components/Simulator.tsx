@@ -125,7 +125,7 @@ const ConnectedSimulator = ( { bulldozerPosition, bulldozerDirection, simulation
     return (<FileUploader/>)
   } else if (simulationStatus === ESimulationStatus.inProgress) {
     return(
-      <MDBContainer className="siteMapContainer">
+      <MDBContainer className="inProgressContainer">
         <SiteMap/>
         <UserControls HandleUserCommandCallback={HandleUserCommand}/>
       </MDBContainer>

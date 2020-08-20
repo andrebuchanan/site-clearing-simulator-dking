@@ -9,8 +9,10 @@ input[type=number]{
   width: 25vw;
 }
 
-.siteMapContainer {
-  display: flex;
+.inProgressContainer {
+  display: block;
+  margin: auto;
+  max-height: 100vh;
 }
 
 .rowStyling {
@@ -32,6 +34,9 @@ input[type=number]{
 }
 
 .bulldozer-img {
-  height: 100px;
-  width: 100px;
+  margin:auto;
+  height: 98px;
+  width: 98px;
+  background-color: white;
+  border: '2px solid darkblue';
 }

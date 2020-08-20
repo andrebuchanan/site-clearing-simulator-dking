@@ -39,7 +39,10 @@ const ConnectedBulldozer = ({bulldozerDirection}: IBulldozerProps) => {
   }, [bulldozerDirection])
 
   return(
-    <img className="bulldozer-img" src={currentImage}></img>
+    <div>
+      <img className="bulldozer-img" src={currentImage}></img>
+    </div>
+    
   );
 }
 

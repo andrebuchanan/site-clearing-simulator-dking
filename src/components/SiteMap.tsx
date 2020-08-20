@@ -60,9 +60,11 @@ const ConnectedSiteMap = ({siteMap, mapWidth, mapHeight, bulldozerPosition}: ISi
     const style: any = {
       border: '4px solid darkblue',
       borderRadius: '10px',
-      width: '500px',
-      height: '500px',
+      width: `${mapWidth*100}px`,
+      height: `${mapHeight*100}px`,
+      maxHeight: `70vh`,
       margin: '0 auto',
+      overflow: 'auto',
       display: 'grid',
       gridTemplate: `repeat(${mapHeight}, 1fr) / repeat(${mapWidth}, 1fr)`
     }

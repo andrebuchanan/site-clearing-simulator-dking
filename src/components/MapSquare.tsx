@@ -14,7 +14,9 @@ const style = {
   border: '2px solid darkblue',
   fontSize: '30px',
   margin: '0, auto',
-  outline: 'none'
+  outline: 'none',
+  maxWidth: '100px',
+  maxHeight: '100px'
 };
 
 const MapSquare = ({landType}: ISquareProps) => {
