@@ -1,29 +1,23 @@
 import configureStore from 'redux-mock-store';
-import { EBulldozerDirection } from '../../main/interfaces';
 import React from 'react';
 import { Provider } from 'react-redux';
-import renderer from 'react-test-renderer';
 import Bulldozer from '../../main/components/Bulldozer';
+import { mount } from '../enzyme';
  
 const mockStore = configureStore([]);
 
 describe("Connected Redux Bulldozer Component", () => {
+    const initialState = {};
+    const mockStore = configureStore();
+    let store: any;
+    let wrapper : any;
 
-    let store;
-    let BulldozerComponent: any;
-    beforeEach(() => {
-        store = mockStore({
-            bulldozerDirection: EBulldozerDirection.east,
-        });
-
-        BulldozerComponent = renderer.create(
-            <Provider store={store}>
-                <Bulldozer />
-            </Provider>
-        );
-    });
-
-    it("should render with given state from Redux store", () => {
-        expect(BulldozerComponent.toJSON()).toMatchSnapshot();
+    beforeEach(()=>{
+        store = mockStore(initialState)
+        wrapper = mount( <Provider store={store}><Bulldozer/></Provider> )
     })
+
+    it('render the connected component', () => {
+        expect(wrapper.find(Bulldozer).length).toEqual(1);
+     });
 });

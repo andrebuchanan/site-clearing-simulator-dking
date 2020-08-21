@@ -95,4 +95,32 @@ describe('actions', () => {
         }
         expect(actions.UpdatePaintDamage(paintDamage)).toEqual(expectedAction);
     });
+
+    it('should create an action to update the site map', () => {
+        const newMap: string[][] = [];
+        const expectedAction = {
+            type: types.UPDATE_SITE_MAP,
+            payload: newMap
+        }
+        expect(actions.UpdateSiteMap(newMap)).toEqual(expectedAction);
+    });
+
+
+    it('should create an action to update the site map width', () => {
+        const newWidth: number = 5;
+        const expectedAction = {
+            type: types.UPDATE_MAP_WIDTH,
+            payload: newWidth
+        }
+        expect(actions.UpdateMapWidth(newWidth)).toEqual(expectedAction);
+    });
+
+    it('should create an action to update the site map height', () => {
+        const newHeight: number = 5;
+        const expectedAction = {
+            type: types.UPDATE_MAP_HEIGHT,
+            payload: newHeight
+        }
+        expect(actions.UpdateMapHeight(newHeight)).toEqual(expectedAction);
+    });
 });

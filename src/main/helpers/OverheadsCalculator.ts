@@ -7,9 +7,8 @@ import { ELandType } from "../interfaces";
  */
 export const calculateFuelUsed = (targetLandType: ELandType): number => {
     let fuelUsed: number = 0;
-    let landType: string = targetLandType;
 
-    switch(landType){
+    switch(targetLandType){
         case ELandType.o:
             fuelUsed+=1;
             break;
@@ -18,7 +17,7 @@ export const calculateFuelUsed = (targetLandType: ELandType): number => {
             fuelUsed+=2
             break;
         default:
-            throw Error(`Cannot calculate cost of invalid landtype ${landType}`);
+            throw Error(`Cannot calculate cost of invalid landtype ${targetLandType}`);
     }
     return fuelUsed;
 }

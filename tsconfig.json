@@ -20,6 +20,6 @@
     "jsx": "react"
   },
   "include": [
-    "src", "src/tests/BulldozerHelper.test.ts"
+    "src", "src/tests/helpers/BulldozerHelper.test.ts"
   ]
 }
