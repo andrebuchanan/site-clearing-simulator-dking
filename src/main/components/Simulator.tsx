@@ -5,12 +5,11 @@ import { EBulldozerDirection, IUserCommand, EUserCommand, ISimulatorProps, ESimu
 import { _updateBulldozerDirection, getTargetPosition, targetOutsideBorder, targetContainsProtectedTree, targetContainsUnclearedTree } from "../helpers/BulldozerHelper";
 import store from '../redux/store/store';
 import { connect } from 'react-redux';
-import { UpdateBulldozerDirection, UpdateSimulationStatus, UpdateBulldozerPosition, UpdateLandType } from "../redux/actions/actions";
+import { UpdateBulldozerDirection, UpdateSimulationStatus, UpdateBulldozerPosition, UpdateLandType, UpdateFuelUsed, UpdatePaintDamage } from "../redux/actions/actions";
 import CostSummary from './CostSummary';
 import FileUploader from './FileUploader';
-import { calculatePaintDamage, calculateFuelUsed } from '../helpers/OverheadsCalculator';
-import Bulldozer from './Bulldozer';
-import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
+import { calculateFuelUsed } from '../helpers/OverheadsCalculator';
+import { MDBContainer} from 'mdbreact';
 
 const mapStateToProps = (state: ISimulatorProps) => {
   return { 
@@ -98,14 +97,15 @@ const ConnectedSimulator = ( { bulldozerPosition, bulldozerDirection, simulation
           //1. The advance value > 1 and there is an uncleared tree in the target position
           //2. It is not the last move of the advance and there is an uncleared tree in the target position
           if (advanceValue > 1 && i !== advanceValue-1) {
-            calculatePaintDamage();
+            store.dispatch(UpdatePaintDamage(1));
           }
         }
         //update landType to cleared
         changeLandTypeOfPosition(currentPosition);
         store.dispatch(UpdateBulldozerPosition(targetPosition));
         //calculate cost of moving into new square
-        calculateFuelUsed(targetPositionLandType as ELandType);
+        let fuelUsed: number = calculateFuelUsed(targetPositionLandType as ELandType);
+        store.dispatch(UpdateFuelUsed(fuelUsed));
       }
     }
   }

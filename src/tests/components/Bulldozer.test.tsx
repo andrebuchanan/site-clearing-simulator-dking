@@ -1,9 +1,9 @@
 import configureStore from 'redux-mock-store';
-import { EBulldozerDirection } from '../../interfaces';
-import React, { JSXElementConstructor } from 'react';
+import { EBulldozerDirection } from '../../main/interfaces';
+import React from 'react';
 import { Provider } from 'react-redux';
 import renderer from 'react-test-renderer';
-import Bulldozer from '../../components/Bulldozer';
+import Bulldozer from '../../main/components/Bulldozer';
  
 const mockStore = configureStore([]);
 

@@ -1,5 +1,4 @@
-import { IBulldozerPosition, EBulldozerDirection, EUserCommand, ELandType, ESimulationStatus, IMapBorders } from "../interfaces"
-import { UpdateSimulationStatus, UpdateBulldozerPosition, UpdateLandType } from "../redux/actions/actions";
+import { IBulldozerPosition, EBulldozerDirection, EUserCommand, ELandType, ESimulationStatus, IMapBorders } from "../interfaces";
 
 
 /**

@@ -1,5 +1,5 @@
-import { _updateBulldozerDirection, targetOutsideBorder, getTargetPosition, targetContainsProtectedTree, targetContainsUnclearedTree } from "../helpers/BulldozerHelper";
-import  { EBulldozerDirection, EUserCommand, IBulldozerPosition, IUserCommand, IMapBorders, ELandType } from "../interfaces";
+import { _updateBulldozerDirection, targetOutsideBorder, getTargetPosition, targetContainsProtectedTree, targetContainsUnclearedTree } from "../main/helpers/BulldozerHelper";
+import  { EBulldozerDirection, EUserCommand, IBulldozerPosition, IUserCommand, IMapBorders, ELandType } from "../main/interfaces";
 
 describe("_updateBulldozerDirection", () => {
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import eastImg from "../resources/images/bulldozerEast.png";
-import westImg from "../resources/images/bulldozerWest.png";
-import southImg from "../resources/images/bulldozerSouth.png";
-import northImg from "../resources/images/bulldozerNorth.png";
+import eastImg from "../../resources/images/bulldozerEast.png"
+import westImg from "../../resources/images/bulldozerWest.png";
+import southImg from "../../resources/images/bulldozerSouth.png";
+import northImg from "../../resources/images/bulldozerNorth.png";
 import { EBulldozerDirection, IBulldozerProps } from "../interfaces";
 import { connect } from 'react-redux';
 

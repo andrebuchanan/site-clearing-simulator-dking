@@ -1,10 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import UserControls from '../../components/UserControls';
-import { AddUserCommand } from '../../redux/actions/actions'
-import { ADD_USER_COMMAND } from '../../redux/constants/action-types'
-import { IUserCommand, EUserCommand } from '../../interfaces';
+import UserControls from '../../main/components/UserControls';
+import { AddUserCommand } from '../../main/redux/actions/actions'
+import { ADD_USER_COMMAND } from '../../main/redux/constants/action-types'
+import { IUserCommand, EUserCommand } from '../../main/interfaces';
 import { mount } from '../enzyme';
 
 const mockStore = configureStore([]);

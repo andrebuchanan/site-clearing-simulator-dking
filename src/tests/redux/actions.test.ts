@@ -1,6 +1,6 @@
-import * as actions from "../../redux/actions/actions";
-import * as types from "../../redux/constants/action-types";
-import { IUserCommand, EUserCommand, IMapBorders, EBulldozerDirection, IBulldozerPosition, ESimulationStatus } from "../../interfaces";
+import * as actions from "../../main/redux/actions/actions";
+import * as types from "../../main/redux/constants/action-types";
+import { IUserCommand, EUserCommand, IMapBorders, EBulldozerDirection, IBulldozerPosition, ESimulationStatus } from "../../main/interfaces";
 
 describe('actions', () => {
   it('should create an action to add a user command', () => {
